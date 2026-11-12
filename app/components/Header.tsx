@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getLocalPageHref } from "../lib/page-routes";
 
 interface MenuItem {
   id: number;
@@ -29,10 +30,19 @@ function getHeaderMenuUrl() {
   return `${apiBase}/maxsource/v1/header-menu`;
 }
 
+function getMenuHref(url: string, fallback = "/") {
+  return getLocalPageHref(url, fallback);
+}
+
 function MenuLink({ item }: { item: MenuItem }) {
+  const href = getMenuHref(item.url);
+  if (href.startsWith("/")) {
+    return <Link href={href}>{item.title}</Link>;
+  }
+
   return (
     <a
-      href={item.url}
+      href={href}
       target={item.target || undefined}
       rel={item.target === "_blank" ? "noreferrer" : undefined}
     >
@@ -199,7 +209,7 @@ export default function Header() {
                         <aside className="mega-menu__contact">
                           <p className="mega-menu__eyebrow"><span /> LET&apos;S DISCUSS</p>
                           <h2>Not sure which service fits? We&apos;ll help you scope it.</h2>
-                          <a className="button button--gold" href={contactItem?.url || "/contact"}>
+                          <a className="button button--gold" href={getMenuHref(contactItem?.url || "", "/contact")}>
                             Discuss Your Project
                           </a>
                           <div className="mega-menu__contact-links">
@@ -216,7 +226,7 @@ export default function Header() {
           )}
         </nav>
 
-        <a className="button site-header__cta" href={contactItem?.url || "/contact"}>
+        <a className="button site-header__cta" href={getMenuHref(contactItem?.url || "", "/contact")}>
           Schedule A Free Call
         </a>
       </div>

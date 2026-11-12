@@ -70,7 +70,7 @@ export default function HomeBanner() {
 
   return (
     <section
-      className="relative min-h-[650px] flex items-center overflow-hidden bg-[#071426] bg-cover bg-center text-white"
+      className="home-banner relative min-h-[650px] flex items-center overflow-hidden bg-[#071426] bg-cover bg-center text-white"
       style={
         backgroundImage
           ? { backgroundImage: `url("${backgroundImage}")` }
@@ -82,12 +82,12 @@ export default function HomeBanner() {
       <div className="relative z-10 max-w-7xl mx-auto w-full px-6 py-24">
         <div className="max-w-3xl">
 
-          <span className="text-blue-400 uppercase tracking-[4px] text-sm font-semibold">
+          <span className="home-banner__eyebrow uppercase tracking-[4px] text-sm font-semibold">
             AUTOGILITY • DIGITAL INNOVATION
           </span>
 
           <h1
-            className="text-5xl md:text-7xl font-bold leading-tight mt-6"
+            className="text-5xl md:text-7xl leading-tight mt-6"
             dangerouslySetInnerHTML={{
               __html: page.title.rendered,
             }}
@@ -103,14 +103,14 @@ export default function HomeBanner() {
           <div className="flex flex-wrap gap-4 mt-10">
             <a
               href="#contact"
-              className="bg-blue-500 hover:bg-blue-600 px-8 py-4 rounded-lg font-semibold transition"
+              className="home-banner__primary-button"
             >
               Get Started
             </a>
 
             <a
               href="#services"
-              className="border border-white/40 hover:bg-white/10 px-8 py-4 rounded-lg font-semibold transition"
+              className="home-banner__secondary-button"
             >
               Explore Services
             </a>
