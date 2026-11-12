@@ -26,7 +26,9 @@ jobs:
 
       - name: Build Next.js
         run: npm run build
-
+        env:
+          NEXT_PUBLIC_WORDPRESS_API_URL: https://maxsource-dev.maxsourceworld.com/backend/wp-json/wp/v2
+          
       - name: Upload out folder to cPanel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
