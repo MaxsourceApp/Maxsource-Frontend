@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import ThemeSettings from "./components/ThemeSettings";
+import Header from "./components/common/Header";
+import Footer from "./components/common/Footer";
+import { getHeaderData } from "./lib/header-menu";
+import { getThemePresentation } from "./lib/theme-settings";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,17 +21,37 @@ export const metadata: Metadata = {
   description: "AI automation, software development, and digital services.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export const dynamic = "force-dynamic";
+
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const [headerData, theme] = await Promise.all([
+    getHeaderData(),
+    getThemePresentation(),
+  ]);
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        {theme.fontStylesheet && (
+          <>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link
+              rel="preconnect"
+              href="https://fonts.gstatic.com"
+              crossOrigin="anonymous"
+            />
+            <link rel="stylesheet" href={theme.fontStylesheet} />
+          </>
+        )}
+        {theme.cssText && <style>{theme.cssText}</style>}
+      </head>
       <body className="min-h-full flex flex-col">
-        <ThemeSettings />
-        <Header />
+        <Header initialData={headerData} />
         {children}
-        <Footer />
+        <Footer headerData={headerData} />
       </body>
     </html>
   );

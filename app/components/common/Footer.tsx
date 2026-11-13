@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { getLocalPageHref } from "../lib/page-routes";
+import type { HeaderData } from "../../lib/header-menu";
+import { getLocalPageHref } from "../../lib/page-routes";
 
 const footerGroups = [
   {
@@ -102,19 +103,31 @@ function SocialLink({ label, children }: { label: string; children: string }) {
   );
 }
 
-export default function Footer() {
+export default function Footer({ headerData }: { headerData: HeaderData | null }) {
   return (
     <footer className="site-footer">
       <div className="site-footer__content">
         <div className="site-footer__intro">
           <div className="site-footer__top">
             <div className="site-footer__about">
-              <Link className="site-footer__brand" href="/" aria-label="Maxsource home">
-                <span className="site-footer__brand-mark">
-                  <strong>MAX</strong>
-                  <small>SOURCE</small>
-                </span>
-                <span className="site-footer__brand-caption">MAXSOURCE</span>
+              <Link
+                className="site-footer__brand"
+                href="/"
+                aria-label={`${headerData?.siteName || "Maxsource"} home`}
+              >
+                {headerData?.logo ? (
+                  // WordPress hosts this image, so it is loaded without Next image optimization.
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={headerData.logo} alt={headerData.siteName} />
+                ) : (
+                  <>
+                    <span className="site-footer__brand-mark">
+                      <strong>MAX</strong>
+                      <small>SOURCE</small>
+                    </span>
+                    <span className="site-footer__brand-caption">MAXSOURCE</span>
+                  </>
+                )}
               </Link>
               <p>
                 Maxsource Technologies provides AI automation, custom software

@@ -2,22 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getLocalPageHref } from "../lib/page-routes";
-
-interface MenuItem {
-  id: number;
-  title: string;
-  url: string;
-  description: string;
-  target: string;
-  children: MenuItem[];
-}
-
-interface HeaderData {
-  items: MenuItem[];
-  logo: string;
-  siteName: string;
-}
+import type { HeaderData, MenuItem } from "../../lib/header-menu";
+import { getLocalPageHref } from "../../lib/page-routes";
 
 function getHeaderMenuUrl() {
   const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
@@ -32,6 +18,10 @@ function getHeaderMenuUrl() {
 
 function getMenuHref(url: string, fallback = "/") {
   return getLocalPageHref(url, fallback);
+}
+
+function isAboutMenu(item: MenuItem) {
+  return /^about(?:\s+us)?$/i.test(item.title.trim()) || /\/about-us(?:\/|$|[?#])/i.test(item.url);
 }
 
 function MenuLink({ item }: { item: MenuItem }) {
@@ -51,14 +41,18 @@ function MenuLink({ item }: { item: MenuItem }) {
   );
 }
 
-export default function Header() {
-  const [headerData, setHeaderData] = useState<HeaderData | null>(null);
+export default function Header({ initialData }: { initialData: HeaderData | null }) {
+  const [headerData, setHeaderData] = useState<HeaderData | null>(initialData);
   const [menuError, setMenuError] = useState("");
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    if (initialData) {
+      return;
+    }
+
     async function loadHeaderMenu() {
       try {
         const response = await fetch(getHeaderMenuUrl());
@@ -76,7 +70,7 @@ export default function Header() {
     }
 
     loadHeaderMenu();
-  }, []);
+  }, [initialData]);
 
   const menuItems = headerData?.items ?? [];
   const contactItem = menuItems.find((item) => /contact|schedule/i.test(item.title));
@@ -93,12 +87,12 @@ export default function Header() {
             // WordPress hosts this image, so it is loaded without Next image optimization.
             // eslint-disable-next-line @next/next/no-img-element
             <img src={headerData.logo} alt={headerData.siteName} />
-          ) : (
+          ) : headerData ? (
             <span className="site-header__brand-mark" aria-hidden="true">
               <strong>MAX</strong>
               <small>SOURCE</small>
             </span>
-          )}
+          ) : null}
         </Link>
 
         <button
@@ -164,60 +158,74 @@ export default function Header() {
                     </div>
 
                     {hasChildren && isOpen && (
-                      <div className="mega-menu">
-                        <div className="mega-menu__categories">
-                          {item.children.map((category) => (
-                            <button
-                              className={`mega-menu__category${activeCategoryId === category.id ? " is-active" : ""}`}
-                              type="button"
-                              key={category.id}
-                              onMouseEnter={() => setActiveCategoryId(category.id)}
-                              onFocus={() => setActiveCategoryId(category.id)}
-                              onClick={() => setActiveCategoryId(category.id)}
-                            >
-                              {category.title}
-                              <span aria-hidden="true">↗</span>
-                            </button>
-                          ))}
+                      isAboutMenu(item) ? (
+                        <div className="mega-menu mega-menu--about">
+                          <nav className="about-menu__links" aria-label="About Us pages">
+                            {item.children.map((child) => (
+                              <MenuLink item={child} key={child.id} />
+                            ))}
+                          </nav>
+                          <aside className="about-menu__feature">
+                            <h2>Technology that helps you build, automate &amp; scale.</h2>
+                            <p>New York headquarters with global delivery capability.</p>
+                          </aside>
                         </div>
-
-                        {item.children
-                          .filter((category) => category.id === activeCategoryId)
-                          .map((category) => (
-                            <div className="mega-menu__details" key={category.id}>
-                              <div className="mega-menu__heading">
-                                <div>
-                                  <h2>{category.title}</h2>
-                                  {category.description && <p>{category.description}</p>}
-                                </div>
-                                <MenuLink item={category} />
-                              </div>
-                              {category.children.length > 0 ? (
-                                <ul className="mega-menu__links">
-                                  {category.children.map((child) => (
-                                    <li key={child.id}><MenuLink item={child} /></li>
-                                  ))}
-                                </ul>
-                              ) : (
-                                <p className="mega-menu__empty">
-                                  <MenuLink item={category} />
-                                </p>
-                              )}
-                            </div>
-                          ))}
-
-                        <aside className="mega-menu__contact">
-                          <p className="mega-menu__eyebrow"><span /> LET&apos;S DISCUSS</p>
-                          <h2>Not sure which service fits? We&apos;ll help you scope it.</h2>
-                          <a className="button button--gold" href={getMenuHref(contactItem?.url || "", "/contact")}>
-                            Discuss Your Project
-                          </a>
-                          <div className="mega-menu__contact-links">
-                            <a href="tel:+18556003777">☎ <span>+1 855-600-3777</span></a>
-                            <a href="mailto:info@maxsourceworld.com">✉ <span>info@maxsourceworld.com</span></a>
+                      ) : (
+                        <div className="mega-menu">
+                          <div className="mega-menu__categories">
+                            {item.children.map((category) => (
+                              <button
+                                className={`mega-menu__category${activeCategoryId === category.id ? " is-active" : ""}`}
+                                type="button"
+                                key={category.id}
+                                onMouseEnter={() => setActiveCategoryId(category.id)}
+                                onFocus={() => setActiveCategoryId(category.id)}
+                                onClick={() => setActiveCategoryId(category.id)}
+                              >
+                                {category.title}
+                                <span aria-hidden="true">↗</span>
+                              </button>
+                            ))}
                           </div>
-                        </aside>
-                      </div>
+
+                          {item.children
+                            .filter((category) => category.id === activeCategoryId)
+                            .map((category) => (
+                              <div className="mega-menu__details" key={category.id}>
+                                <div className="mega-menu__heading">
+                                  <div>
+                                    <h2>{category.title}</h2>
+                                    {category.description && <p>{category.description}</p>}
+                                  </div>
+                                  <MenuLink item={category} />
+                                </div>
+                                {category.children.length > 0 ? (
+                                  <ul className="mega-menu__links">
+                                    {category.children.map((child) => (
+                                      <li key={child.id}><MenuLink item={child} /></li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  <p className="mega-menu__empty">
+                                    <MenuLink item={category} />
+                                  </p>
+                                )}
+                              </div>
+                            ))}
+
+                          <aside className="mega-menu__contact">
+                            <p className="mega-menu__eyebrow"><span /> LET&apos;S DISCUSS</p>
+                            <h2>Not sure which service fits? We&apos;ll help you scope it.</h2>
+                            <a className="button button--gold" href={getMenuHref(contactItem?.url || "", "/contact")}>
+                              Discuss Your Project
+                            </a>
+                            <div className="mega-menu__contact-links">
+                              <a href="tel:+18556003777">☎ <span>+1 855-600-3777</span></a>
+                              <a href="mailto:info@maxsourceworld.com">✉ <span>info@maxsourceworld.com</span></a>
+                            </div>
+                          </aside>
+                        </div>
+                      )
                     )}
                   </li>
                 );
