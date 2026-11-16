@@ -1,5 +1,8 @@
 import type { WordPressPage } from "../../lib/wordpress-pages";
-import { normalizeWordPressHtml } from "./WordPressText";
+import {
+  normalizeWordPressHtml,
+  wrapBareTextInParagraphs,
+} from "./WordPressText";
 
 function emphasizeHeading(content: string) {
   return content.replace(
@@ -73,7 +76,10 @@ export default function CallToActionSection({ page }: { page: WordPressPage }) {
         className="call-to-action__content"
         dangerouslySetInnerHTML={{
           __html: normalizeWordPressHtml(
-            addButtonClass(preserveRepeatedSpaces(emphasizeHeading(content))),
+            wrapBareTextInParagraphs(
+              addButtonClass(preserveRepeatedSpaces(emphasizeHeading(content))),
+              "call-to-action__description",
+            ),
           ),
         }}
       />

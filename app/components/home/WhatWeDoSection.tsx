@@ -1,6 +1,9 @@
 import type { WordPressPage } from "../../lib/wordpress-pages";
 import SectionIntro from "../common/SectionIntro";
-import WordPressText, { normalizeWordPressHtml } from "../common/WordPressText";
+import WordPressText, {
+  normalizeWordPressHtml,
+  wrapBareTextInParagraphs,
+} from "../common/WordPressText";
 
 function addFeaturedTags(content: string) {
   return content.replace(/<h6\b[^>]*>([\s\S]*?)<\/h6>/i, (heading, tagContent: string) => {
@@ -89,17 +92,26 @@ export default function HomeWhatWeDoSection({ page }: { page: WordPressPage }) {
 
       {cards.length > 0 && (
         <div className="what-we-do__grid">
-          {cards.map((card) => (
-            <article
-              className={`what-we-do__card${card.id === 1 ? " what-we-do__card--featured" : ""}`}
-              key={card.id}
-              dangerouslySetInnerHTML={{
-                __html: normalizeWordPressHtml(
-                  card.id === 1 ? addFeaturedTags(card.content) : card.content,
-                ),
-              }}
-            />
-          ))}
+          {cards.map((card) => {
+            const content = wrapBareTextInParagraphs(
+              card.id === 1 ? addFeaturedTags(card.content) : card.content,
+              card.id === 1 ? undefined : "what-we-do__card-description",
+            );
+            const numberMarkup =
+              card.id > 1
+                ? `<span class="what-we-do__card-number" aria-hidden="true">${String(card.id).padStart(2, "0")}</span>`
+                : "";
+
+            return (
+              <article
+                className={`what-we-do__card${card.id === 1 ? " what-we-do__card--featured" : ""}`}
+                key={card.id}
+                dangerouslySetInnerHTML={{
+                  __html: normalizeWordPressHtml(`${numberMarkup}${content}`),
+                }}
+              />
+            );
+          })}
         </div>
       )}
     </section>

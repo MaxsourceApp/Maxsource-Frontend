@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProjectBySlug } from "../../lib/projects";
+import { getProjectBySlug, getProjects } from "../../lib/projects";
 import { normalizeWordPressHtml } from "../../components/common/WordPressText";
+
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ slug: project.slug }));
+}
 
 export default async function ProjectPage({
   params,

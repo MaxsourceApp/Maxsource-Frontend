@@ -45,20 +45,26 @@ export interface WordPressPage {
   };
 }
 
-function getPagesApiUrl(slug: string) {
+export interface WordPressPageRoute {
+  id: number;
+  slug: string;
+  parent: number;
+}
+
+function getPagesApiUrl() {
   const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
   if (!apiUrl) {
     throw new Error("NEXT_PUBLIC_WORDPRESS_API_URL is not configured.");
   }
 
-  const url = new URL(`${apiUrl.replace(/\/$/, "")}/pages`);
-  url.searchParams.set("slug", slug);
-  url.searchParams.set("_embed", "1");
-  return url.toString();
+  return new URL(`${apiUrl.replace(/\/$/, "")}/pages`);
 }
 
 export async function getWordPressPage(slug: string): Promise<WordPressPage | null> {
-  const response = await fetch(getPagesApiUrl(slug), { cache: "no-store" });
+  const url = getPagesApiUrl();
+  url.searchParams.set("slug", slug);
+  url.searchParams.set("_embed", "1");
+  const response = await fetch(url.toString(), { cache: "force-cache" });
 
   if (!response.ok) {
     throw new Error(`WordPress returned ${response.status} for page "${slug}".`);
@@ -66,4 +72,47 @@ export async function getWordPressPage(slug: string): Promise<WordPressPage | nu
 
   const pages: WordPressPage[] = await response.json();
   return pages.find((page) => page.slug === slug) ?? null;
+}
+
+function isWordPressPageRoute(value: unknown): value is WordPressPageRoute {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  const page = value as Record<string, unknown>;
+  return (
+    typeof page.id === "number" &&
+    typeof page.slug === "string" &&
+    typeof page.parent === "number"
+  );
+}
+
+export async function getWordPressPageRoutes(): Promise<WordPressPageRoute[]> {
+  const url = getPagesApiUrl();
+  url.searchParams.set("per_page", "100");
+  url.searchParams.set("_fields", "id,slug,parent");
+
+  const pages: WordPressPageRoute[] = [];
+  let totalPages = 1;
+
+  for (let page = 1; page <= totalPages; page += 1) {
+    url.searchParams.set("page", String(page));
+    const response = await fetch(url.toString(), { cache: "force-cache" });
+    if (!response.ok) {
+      throw new Error(`WordPress returned ${response.status} while listing pages.`);
+    }
+
+    const data: unknown = await response.json();
+    if (!Array.isArray(data) || !data.every(isWordPressPageRoute)) {
+      throw new Error("WordPress returned an invalid page list.");
+    }
+
+    pages.push(...data);
+    const responseTotalPages = Number(response.headers.get("X-WP-TotalPages"));
+    if (Number.isInteger(responseTotalPages) && responseTotalPages > 0) {
+      totalPages = responseTotalPages;
+    }
+  }
+
+  return pages;
 }

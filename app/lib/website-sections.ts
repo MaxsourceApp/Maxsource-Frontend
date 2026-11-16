@@ -50,7 +50,7 @@ function isWebsiteSection(value: unknown): value is WebsiteSection {
 }
 
 export async function getWebsiteSectionBySlug(slug: string): Promise<WebsiteSection | null> {
-  const response = await fetch(getWebsiteSectionsApiUrl(slug), { cache: "no-store" });
+  const response = await fetch(getWebsiteSectionsApiUrl(slug), { cache: "force-cache" });
   if (!response.ok) {
     throw new Error(`WordPress returned ${response.status} for website section "${slug}".`);
   }

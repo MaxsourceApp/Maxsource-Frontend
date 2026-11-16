@@ -38,8 +38,10 @@ function isProjectPost(value: unknown): value is ProjectPost {
   );
 }
 
-async function fetchProjects(url: URL): Promise<ProjectPost[]> {
-  const response = await fetch(url, { cache: "no-store" });
+async function fetchProjects(
+  url: URL,
+): Promise<{ projects: ProjectPost[]; totalPages: number }> {
+  const response = await fetch(url, { cache: "force-cache" });
   if (!response.ok) {
     throw new Error(`WordPress returned ${response.status} for projects.`);
   }
@@ -49,7 +51,14 @@ async function fetchProjects(url: URL): Promise<ProjectPost[]> {
     throw new Error("WordPress returned an invalid projects response.");
   }
 
-  return data;
+  const responseTotalPages = Number(response.headers.get("X-WP-TotalPages"));
+  return {
+    projects: data,
+    totalPages:
+      Number.isInteger(responseTotalPages) && responseTotalPages > 0
+        ? responseTotalPages
+        : 1,
+  };
 }
 
 export async function getProjects(): Promise<ProjectPost[]> {
@@ -58,7 +67,17 @@ export async function getProjects(): Promise<ProjectPost[]> {
   url.searchParams.set("per_page", "100");
   url.searchParams.set("orderby", "date");
   url.searchParams.set("order", "asc");
-  return fetchProjects(url);
+
+  const projects: ProjectPost[] = [];
+  let totalPages = 1;
+  for (let page = 1; page <= totalPages; page += 1) {
+    url.searchParams.set("page", String(page));
+    const result = await fetchProjects(url);
+    projects.push(...result.projects);
+    totalPages = result.totalPages;
+  }
+
+  return projects;
 }
 
 export async function getProjectBySlug(slug: string): Promise<ProjectPost | null> {
@@ -67,6 +86,6 @@ export async function getProjectBySlug(slug: string): Promise<ProjectPost | null
   url.searchParams.set("slug", slug);
   url.searchParams.set("per_page", "1");
 
-  const projects = await fetchProjects(url);
+  const { projects } = await fetchProjects(url);
   return projects[0] ?? null;
 }

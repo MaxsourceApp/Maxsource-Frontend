@@ -50,7 +50,7 @@ async function getBannerBackground(value: unknown): Promise<BannerBackground | n
 
     const response = await fetch(
       `${apiUrl.replace(/\/$/, "")}/media/${mediaId}`,
-      { cache: "no-store" },
+      { cache: "force-cache" },
     );
     if (!response.ok) {
       throw new Error(`WordPress returned ${response.status} for media ${mediaId}.`);

@@ -33,7 +33,7 @@ export async function getThemePresentation(): Promise<ThemePresentation> {
   try {
     const apiBase = apiUrl.replace(/\/wp\/v2\/?$/, "");
     const response = await fetch(`${apiBase}/maxsource/v1/theme-settings`, {
-      cache: "no-store",
+      cache: "force-cache",
     });
     if (!response.ok) {
       throw new Error(`WordPress returned ${response.status} for theme settings.`);

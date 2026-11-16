@@ -1,5 +1,8 @@
 import SectionIntro from "../common/SectionIntro";
-import { normalizeWordPressHtml } from "../common/WordPressText";
+import {
+  normalizeWordPressHtml,
+  wrapBareTextInParagraphs,
+} from "../common/WordPressText";
 import type { WordPressPage } from "../../lib/wordpress-pages";
 
 export default function IndustriesWeServeSection({ page }: { page: WordPressPage }) {
@@ -44,7 +47,14 @@ export default function IndustriesWeServeSection({ page }: { page: WordPressPage
               <article
                 className="industries-we-serve__card"
                 key={industry.id}
-                dangerouslySetInnerHTML={{ __html: normalizeWordPressHtml(industry.content) }}
+                dangerouslySetInnerHTML={{
+                  __html: normalizeWordPressHtml(
+                    wrapBareTextInParagraphs(
+                      industry.content,
+                      "industries-we-serve__card-description",
+                    ),
+                  ),
+                }}
               />
             ))}
           </div>

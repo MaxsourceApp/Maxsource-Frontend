@@ -21,8 +21,6 @@ export const metadata: Metadata = {
   description: "AI automation, software development, and digital services.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const [headerData, theme] = await Promise.all([
     getHeaderData(),

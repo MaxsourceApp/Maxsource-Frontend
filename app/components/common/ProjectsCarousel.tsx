@@ -42,7 +42,27 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
                           __html: normalizeWordPressHtml(project.title.rendered),
                         }}
                       />
-                      <span className="projects-carousel__arrow" aria-hidden="true">↗</span>
+                      <span className="projects-carousel__arrow" aria-hidden="true">
+
+<span className="projects-carousel__arrow" aria-hidden="true">
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 8 8"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M0.600098 7.26667L7.26676 0.600006M7.26676 6.60001V0.600006H1.26676"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      stroke="#fff"
+    />
+  </svg>
+</span>
+
+                      </span>
                     </Link>
                     {image?.source_url ? (
                       <Link

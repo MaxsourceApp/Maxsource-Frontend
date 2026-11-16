@@ -1,6 +1,9 @@
 import Link from "next/link";
 import SectionIntro from "./SectionIntro";
-import { normalizeWordPressHtml } from "./WordPressText";
+import {
+  normalizeWordPressHtml,
+  wrapBareTextInParagraphs,
+} from "./WordPressText";
 import { getWebsiteSectionBySlug } from "../../lib/website-sections";
 
 export default async function HowItWorksSection() {
@@ -48,7 +51,14 @@ export default async function HowItWorksSection() {
               <article
                 className="how-it-works-section__step"
                 key={step.id}
-                dangerouslySetInnerHTML={{ __html: normalizeWordPressHtml(step.content) }}
+                dangerouslySetInnerHTML={{
+                  __html: normalizeWordPressHtml(
+                    wrapBareTextInParagraphs(
+                      step.content,
+                      "how-it-works-section__step-description",
+                    ),
+                  ),
+                }}
               />
             ))}
           </div>
