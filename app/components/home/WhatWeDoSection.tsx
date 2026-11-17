@@ -7,7 +7,7 @@ import WordPressText, {
 
 function addFeaturedTags(content: string) {
   return content.replace(/<h6\b[^>]*>([\s\S]*?)<\/h6>/i, (heading, tagContent: string) => {
-    if (/<\/?[a-z][^>]*>/i.test(tagContent)) {
+    if (/<\/?(?!br\b)[a-z][^>]*>/i.test(tagContent)) {
       return heading;
     }
 
@@ -93,8 +93,9 @@ export default function HomeWhatWeDoSection({ page }: { page: WordPressPage }) {
       {cards.length > 0 && (
         <div className="what-we-do__grid">
           {cards.map((card) => {
+            const normalizedContent = normalizeWordPressHtml(card.content);
             const content = wrapBareTextInParagraphs(
-              card.id === 1 ? addFeaturedTags(card.content) : card.content,
+              card.id === 1 ? addFeaturedTags(normalizedContent) : normalizedContent,
               card.id === 1 ? undefined : "what-we-do__card-description",
             );
             const numberMarkup =

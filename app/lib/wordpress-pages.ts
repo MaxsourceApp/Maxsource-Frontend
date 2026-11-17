@@ -11,6 +11,24 @@ export interface WordPressPage {
     banner_description?: string;
     banner_button_text?: string;
     call_to_action?: string;
+    why_maxsource?: string;
+    what_we_build_title?: string;
+    what_we_build_column_1?: string;
+    what_we_build_column_2?: string;
+    what_we_build_column_3?: string;
+    what_we_build_column_4?: string;
+    what_we_build_column_5?: string;
+    what_we_build_column_6?: string;
+    our_strengths_small_title?: string;
+    our_strengths_title?: string;
+    our_strengths_column_1?: string;
+    our_strengths_column_2?: string;
+    our_strengths_column_3?: string;
+    benefits_title?: string;
+    benefits_count?: string;
+    faq_small_title?: string;
+    faq_title?: string;
+    faq?: string;
     metrics_value_1?: string;
     metrics_title_1?: string;
     metrics_value_2?: string;
@@ -64,7 +82,9 @@ export async function getWordPressPage(slug: string): Promise<WordPressPage | nu
   const url = getPagesApiUrl();
   url.searchParams.set("slug", slug);
   url.searchParams.set("_embed", "1");
-  const response = await fetch(url.toString(), { cache: "force-cache" });
+  const response = await fetch(url.toString(), {
+    cache: process.env.NODE_ENV === "development" ? "no-store" : "force-cache",
+  });
 
   if (!response.ok) {
     throw new Error(`WordPress returned ${response.status} for page "${slug}".`);

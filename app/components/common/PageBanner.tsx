@@ -65,7 +65,7 @@ async function getBannerBackground(value: unknown): Promise<BannerBackground | n
 }
 
 function BannerTitle({ title }: { title: string }) {
-  const emphasis = /(automate)/i.exec(title);
+  const emphasis = /(automate|laravel)/i.exec(title);
   if (!emphasis || emphasis.index === undefined) {
     return <WordPressText value={title} />;
   }

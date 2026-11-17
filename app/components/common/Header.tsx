@@ -49,9 +49,11 @@ function MegaMenuArrow() {
 function MenuLink({
   item,
   showArrow = false,
+  onNavigate,
 }: {
   item: MenuItem;
   showArrow?: boolean;
+  onNavigate?: () => void;
 }) {
   const href = getMenuHref(item.url);
   const content = (
@@ -62,7 +64,7 @@ function MenuLink({
   );
 
   if (href.startsWith("/")) {
-    return <Link href={href}>{content}</Link>;
+    return <Link href={href} onClick={onNavigate}>{content}</Link>;
   }
 
   return (
@@ -70,6 +72,7 @@ function MenuLink({
       href={href}
       target={item.target || undefined}
       rel={item.target === "_blank" ? "noreferrer" : undefined}
+      onClick={onNavigate}
     >
       {content}
     </a>
@@ -109,6 +112,10 @@ export default function Header({ initialData }: { initialData: HeaderData | null
 
   const menuItems = headerData?.items ?? [];
   const contactItem = menuItems.find((item) => /contact|schedule/i.test(item.title));
+  const closeMegaMenu = () => {
+    setOpenMenuId(null);
+    setActiveCategoryId(null);
+  };
 
   return (
     <header className="site-header">
@@ -197,7 +204,7 @@ export default function Header({ initialData }: { initialData: HeaderData | null
                         <div className="mega-menu mega-menu--about">
                           <nav className="about-menu__links" aria-label="About Us pages">
                             {item.children.map((child) => (
-                              <MenuLink item={child} key={child.id} showArrow />
+                              <MenuLink item={child} key={child.id} showArrow onNavigate={closeMegaMenu} />
                             ))}
                           </nav>
                           <aside className="about-menu__feature">
@@ -214,7 +221,7 @@ export default function Header({ initialData }: { initialData: HeaderData | null
                                   key={category.id}
                                   onMouseEnter={() => setActiveCategoryId(category.id)}
                                 >
-                                  <MenuLink item={category} />
+                                  <MenuLink item={category} onNavigate={closeMegaMenu} />
 
                                   <MegaMenuArrow />
                                 </div>
@@ -229,17 +236,17 @@ export default function Header({ initialData }: { initialData: HeaderData | null
                                     <h2>{category.title}</h2>
                                     {category.description && <p>{category.description}</p>}
                                   </div>
-                                  <MenuLink item={category} />
+                                  <MenuLink item={category} onNavigate={closeMegaMenu} />
                                 </div>
                                 {category.children.length > 0 ? (
                                   <ul className="mega-menu__links">
                                     {category.children.map((child) => (
-                                      <li key={child.id}><MenuLink item={child} /></li>
+                                      <li key={child.id}><MenuLink item={child} onNavigate={closeMegaMenu} /></li>
                                     ))}
                                   </ul>
                                 ) : (
                                   <p className="mega-menu__empty">
-                                    <MenuLink item={category} />
+                                    <MenuLink item={category} onNavigate={closeMegaMenu} />
                                   </p>
                                 )}
                               </div>
@@ -248,11 +255,11 @@ export default function Header({ initialData }: { initialData: HeaderData | null
                           <aside className="mega-menu__contact">
                             <p className="mega-menu__eyebrow"><span /> LET&apos;S DISCUSS</p>
                             <h2>Not sure which service fits? We&apos;ll help you scope it.</h2>
-                            <a className="button button--gold" href={getMenuHref(contactItem?.url || "", "/contact")}>
+                            <a className="button" href={getMenuHref(contactItem?.url || "", "/contact")} onClick={closeMegaMenu}>
                               Discuss Your Project
                             </a>
                             <div className="mega-menu__contact-links">
-                              <a href="tel:+18556003777">
+                              <a href="tel:+18556003777" onClick={closeMegaMenu}>
                                 <svg
                                   width="14"
                                   height="14"
@@ -269,7 +276,7 @@ export default function Header({ initialData }: { initialData: HeaderData | null
                                 </svg>
                                 <span>+1 855-600-3777</span>
                               </a>
-                              <a href="mailto:info@maxsourceworld.com">
+                              <a href="mailto:info@maxsourceworld.com" onClick={closeMegaMenu}>
                                 <svg
                                   width="14"
                                   height="11"

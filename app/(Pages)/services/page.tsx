@@ -1,9 +1,12 @@
+import HowItWorksSection from "../../components/common/HowItWorksSection";
 import WordPressPageLayout from "../../components/common/WordPressPageLayout";
+import ServicesDirectorySection from "../../components/services/ServicesDirectorySection";
 
 export default function ServicesPage() {
   return (
     <WordPressPageLayout slug="services">
-      {/* Add Services-specific sections here, before the WordPress page content. */}
+      <ServicesDirectorySection />
+      <HowItWorksSection />
     </WordPressPageLayout>
   );
 }

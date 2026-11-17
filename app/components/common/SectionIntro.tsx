@@ -7,6 +7,7 @@ interface SectionIntroProps {
   highlight?: string;
   titleId?: string;
   tone?: "light" | "dark";
+  className?: string;
 }
 
 function HighlightedTitle({ title, highlight }: { title: string; highlight?: string }) {
@@ -32,13 +33,14 @@ export default function SectionIntro({
   highlight,
   titleId,
   tone = "light",
+  className,
 }: SectionIntroProps) {
   if (!smallTitle && !title && !description) {
     return null;
   }
 
   return (
-    <div className={`section-intro${tone === "dark" ? " section-intro--dark" : ""}`}>
+    <div className={`section-intro${tone === "dark" ? " section-intro--dark" : ""}${className ? ` ${className}` : ""}`}>
       <div>
         {smallTitle && <p className="section-intro__eyebrow"><WordPressText value={smallTitle} /></p>}
         {title && (
