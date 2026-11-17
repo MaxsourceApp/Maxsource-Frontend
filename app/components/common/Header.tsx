@@ -178,7 +178,7 @@ export default function Header({ initialData }: { initialData: HeaderData | null
                     onMouseLeave={() => setOpenMenuId(null)}
                   >
                     <div className="site-header__menu-link">
-                      <MenuLink item={item} />
+                      <MenuLink item={item} onNavigate={closeMegaMenu} />
                       {hasChildren && (
                         <button
                           className="site-header__submenu-toggle"
