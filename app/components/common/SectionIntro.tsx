@@ -4,24 +4,42 @@ interface SectionIntroProps {
   smallTitle?: string;
   title?: string;
   description?: string;
-  highlight?: string;
+  highlight?: string | string[];
   titleId?: string;
   tone?: "light" | "dark";
   className?: string;
 }
 
-function HighlightedTitle({ title, highlight }: { title: string; highlight?: string }) {
-  const start = highlight ? title.toLowerCase().indexOf(highlight.toLowerCase()) : -1;
-  if (start < 0 || !highlight) {
+function HighlightedTitle({
+  title,
+  highlight,
+}: {
+  title: string;
+  highlight?: string | string[];
+}) {
+  const highlights = (Array.isArray(highlight) ? highlight : [highlight])
+    .filter((value): value is string => Boolean(value?.trim()))
+    .sort((first, second) => second.length - first.length);
+
+  if (highlights.length === 0) {
     return <WordPressText value={title} />;
   }
 
-  const end = start + highlight.length;
+  const highlightPattern = new RegExp(
+    `(${highlights.map((value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`,
+    "gi",
+  );
+  const highlightSet = new Set(highlights.map((value) => value.toLowerCase()));
+
   return (
     <>
-      <WordPressText value={title.slice(0, start)} />
-      <span><WordPressText value={title.slice(start, end)} /></span>
-      <WordPressText value={title.slice(end)} />
+      {title.split(highlightPattern).map((part, index) =>
+        highlightSet.has(part.toLowerCase()) ? (
+          <span key={index}><WordPressText value={part} /></span>
+        ) : (
+          <WordPressText key={index} value={part} />
+        ),
+      )}
     </>
   );
 }

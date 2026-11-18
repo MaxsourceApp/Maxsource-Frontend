@@ -13,6 +13,12 @@ import TestimonialsSection from "./TestimonialsSection";
 import HowItWorksSection from "./HowItWorksSection";
 import CallToActionSection from "./CallToActionSection";
 import WordPressPageContent from "./WordPressPageContent";
+import {
+  OurExpertiseSection,
+  VisionMissionSection,
+  WhoWeAreSection,
+  WorkingWithMaxsourceSection,
+} from "../about-us/AboutSections";
 import { getWordPressPage } from "../../lib/wordpress-pages";
 
 const innerServicePageSlugs = new Set([
@@ -57,10 +63,17 @@ export default async function WordPressPageLayout({
       {slug === "home" && <HomeWhatWeDoSection page={page} />}
       {slug === "home" && <IndustriesWeServeSection page={page} />}
       {slug === "home" && <ProjectsSection />}
+      {slug === "about-us" && <WhyMaxsourceSection page={page} />}
+      {slug === "about-us" && <WhoWeAreSection page={page} />}
+      {slug === "about-us" && <OurExpertiseSection page={page} />}
+      {slug === "about-us" && <VisionMissionSection page={page} />}
+      {slug === "about-us" && <WorkingWithMaxsourceSection page={page} />}
       {children}
       <WordPressPageContent page={page} />
       {slug === "home" && <TestimonialsSection />}
       {slug === "home" && <HowItWorksSection />}
+      {slug === "work" && <HowItWorksSection />}
+      
       <CallToActionSection page={page} />
     </main>
   );

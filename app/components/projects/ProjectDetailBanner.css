@@ -1,0 +1,208 @@
+.project-detail {
+  min-height: 60vh;
+  padding: 0;
+  background: #0b0b0b;
+}
+
+.project-detail__footer-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.project-detail__lower {
+  padding: 48px 24px 80px;
+  background: #f7f6f4;
+}
+
+.project-detail__inner {
+  width: min(100%, 1000px);
+  margin: 0 auto;
+}
+
+.project-detail__back {
+  display: inline-block;
+  margin-bottom: 28px;
+  color: #777370;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.project-detail__content {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  color: #4a4744;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.project-detail__content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.project-detail-banner {
+  position: relative;
+  display: grid;
+  min-height: min(760px, calc(100svh - 92px));
+  align-items: center;
+  overflow: hidden;
+  padding: 72px 24px;
+  background:
+    radial-gradient(ellipse at 72% 42%, rgb(255 255 255 / 7%), transparent 34%),
+    linear-gradient(120deg, #090909 0%, #111 54%, #080808 100%);
+  background-position: center;
+  background-size: cover;
+  color: #fff;
+}
+
+.project-detail-banner__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-detail-banner::before {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(10 9 8 / 64%), rgb(10 9 8 / 76%)),
+    radial-gradient(ellipse at center, rgb(10 9 8 / 10%), #100e0d 90%),
+    repeating-linear-gradient(155deg, transparent 0 100px, rgb(255 255 255 / 2%) 102px 106px, transparent 108px 190px);
+  content: "";
+  pointer-events: none;
+}
+
+.project-detail-banner__inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: clamp(36px, 6vw, 84px);
+  width: min(100%, 1200px);
+  margin: 0 auto;
+}
+
+.project-detail-banner__copy {
+  min-width: 0;
+}
+
+.project-detail-banner__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 34px;
+  color: #8d8b86;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.project-detail-banner__eyebrow span {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: #fe0000;
+}
+
+.project-detail .project-detail-banner__title {
+  margin: 0;
+  color: #fff;
+  font-family: var(--body-font), Arial, Helvetica, sans-serif;
+  font-size: clamp(48px, 6vw, 68px);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.project-detail-banner__description {
+  max-width: 540px;
+  margin-top: 28px;
+  color: #a3a19b;
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.75;
+}
+
+.project-detail-banner__description p {
+  margin: 0;
+}
+
+.project-detail-banner__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-detail-banner__categories li {
+  padding: 8px 13px;
+  border: 1px solid #3b3a38;
+  border-radius: 999px;
+  color: #c4c2bd;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.project-detail-banner__button {
+  margin-top: 36px;
+  border-radius: 12px;
+  background: #ffab00;
+  color: #111;
+}
+
+.project-detail-banner__button:hover {
+  background: #ffc044;
+  color: #111;
+}
+
+.project-detail-banner__visual {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-detail-banner__visual img {
+  display: block;
+  width: 100%;
+  max-height: 490px;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 28px rgb(0 0 0 / 42%));
+}
+
+@media (max-width: 760px) {
+  .project-detail-banner {
+    min-height: auto;
+    padding: 64px 24px;
+  }
+
+  .project-detail-banner__inner {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+
+  .project-detail-banner__eyebrow {
+    margin-bottom: 24px;
+  }
+
+  .project-detail-banner__description {
+    margin-top: 20px;
+  }
+
+  .project-detail-banner__button {
+    margin-top: 28px;
+  }
+
+  .project-detail-banner__visual img {
+    max-height: 360px;
+  }
+}

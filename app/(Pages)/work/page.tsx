@@ -1,9 +1,13 @@
+import WorkProjects from "../../components/work/WorkProjects";
 import WordPressPageLayout from "../../components/common/WordPressPageLayout";
+import { getProjects } from "../../lib/projects";
 
-export default function WorkPage() {
+export default async function WorkPage() {
+  const projects = await getProjects();
+
   return (
     <WordPressPageLayout slug="work">
-      {/* Add Work-specific sections here, before the WordPress page content. */}
+      <WorkProjects projects={projects} />
     </WordPressPageLayout>
   );
 }
