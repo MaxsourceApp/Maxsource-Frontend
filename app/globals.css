@@ -2132,36 +2132,35 @@ article.what-we-do__card.what-we-do__card--featured p {
 }
 
 .faq-section__question {
-    color: #0D0C0A;
-    cursor: pointer;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 18px;
-    padding: 15px 0;
-    font-size: 21px;
-    font-weight: 600;
-    line-height: 1.45;
-    list-style: none;
-    display: flex;
-    position: relative;
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 0;
+  border: 0;
+  background: transparent;
+  color: #0d0c0a;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
 }
 
-.faq-section__question::-webkit-details-marker {
-  display: none;
+.faq-section__question::after {
+  flex: 0 0 25px;
+  color: #ef2424;
+  content: "+";
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
 }
 
-.faq-section__question:after {
-    color: #ef2424;
-    content: "+";
-    text-align: center;
-    flex: 0 0 25px;
-    font-size: 25px;
-    font-weight: 500;
-    line-height: 1.2;
-}
-
-.faq-section__item[open] > .faq-section__question::after {
-  content: "-";
+.faq-section__question[aria-expanded="true"]::after {
+  content: "\2212";
 }
 
 .faq-section__question:focus-visible {
@@ -2169,17 +2168,42 @@ article.what-we-do__card.what-we-do__card--featured p {
   outline-offset: 3px;
 }
 
+.faq-section__answer-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 300ms ease,
+    opacity 200ms ease;
+}
+
+.faq-section__answer-wrap--open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
 .faq-section__answer {
-  padding: 0 24px 16px 0;
+  min-height: 0;
+  overflow: hidden;
   color: #777370;
   font-size: 11px;
   line-height: 1.6;
 }
 
+.faq-section__answer-content {
+  padding: 0 24px 16px 0;
+}
+
 .faq-section__answer p, p.faq-section__answer-text {
-    margin: 0;
-    color: #6B6A67;
-    font-size: 17px;
+  margin: 0;
+  color: #6b6a67;
+  font-size: 17px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-section__answer-wrap {
+    transition: none;
+  }
 }
 
 .services-directory {
@@ -2784,4 +2808,10 @@ p.how-it-works-section__step-description {
 }
 article.how-it-works-section__step {
     cursor: pointer;
+}
+.remote-teams-working section {
+    background: #FCFBF9 !important;
+}
+.remote-teams-testimonials section {
+    background: #F4F3F1 !important;
 }

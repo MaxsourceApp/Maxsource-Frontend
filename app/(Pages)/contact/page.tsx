@@ -1,9 +1,10 @@
 import WordPressPageLayout from "../../components/common/WordPressPageLayout";
+import ContactFormSection from "../../components/contact/ContactFormSection";
 
 export default function ContactPage() {
   return (
     <WordPressPageLayout slug="contact">
-      {/* Add Contact-specific sections here, before the WordPress page content. */}
+      <ContactFormSection />
     </WordPressPageLayout>
   );
 }

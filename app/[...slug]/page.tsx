@@ -14,6 +14,7 @@ const dedicatedPageSlugs = new Set([
   "mobile-app-development",
   "php-web-development",
   "python-development",
+  "partner-with-us",
   "remote-teams",
   "ruby-on-rails-development",
   "services",

@@ -244,7 +244,7 @@ export function WorkingWithMaxsourceSection({ page }: { page: WordPressPage }) {
   }
 
   const intro = getSectionIntro(acf.working_with_maxsource_title);
-  const cards = Array.from({ length: 5 }, (_, index) => {
+  const cards = Array.from({ length: 6 }, (_, index) => {
     const content = acf[`working_with_maxsource_column_${index + 1}` as keyof typeof acf];
     return typeof content === "string" && content.trim()
       ? getFeatureCard(content)
@@ -269,7 +269,7 @@ export function WorkingWithMaxsourceSection({ page }: { page: WordPressPage }) {
           smallTitle={intro.eyebrow}
           title={intro.title}
           description={intro.description}
-          highlight="love"
+          highlight={["Culture", "love"]}
           titleId={sectionId}
         />
 

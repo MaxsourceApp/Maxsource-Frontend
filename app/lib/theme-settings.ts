@@ -33,10 +33,14 @@ export async function getThemePresentation(): Promise<ThemePresentation> {
   try {
     const apiBase = apiUrl.replace(/\/wp\/v2\/?$/, "");
     const response = await fetch(`${apiBase}/maxsource/v1/theme-settings`, {
+      headers: { Accept: "application/json" },
       cache: "force-cache",
     });
     if (!response.ok) {
       throw new Error(`WordPress returned ${response.status} for theme settings.`);
+    }
+    if (!response.headers.get("content-type")?.includes("application/json")) {
+      throw new Error("WordPress returned a non-JSON response for theme settings.");
     }
 
     const data: unknown = await response.json();

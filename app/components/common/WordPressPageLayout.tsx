@@ -19,6 +19,16 @@ import {
   WhoWeAreSection,
   WorkingWithMaxsourceSection,
 } from "../about-us/AboutSections";
+import OpenRolesSection from "../career/OpenRolesSection";
+import PartnershipSection from "../partners/PartnershipSection";
+import PartnershipBenefitsSection from "../partners/PartnershipBenefitsSection";
+import {
+  RemoteTeamBenefitsSection,
+  RemoteTeamExpertiseSection,
+  RemoteTeamProcessSection,
+  RemoteTeamTrustSection,
+} from "../remote-teams/RemoteTeamSections";
+import RemoteTeamTechnologies from "../remote-teams/RemoteTeamTechnologies";
 import { getWordPressPage } from "../../lib/wordpress-pages";
 
 const innerServicePageSlugs = new Set([
@@ -52,7 +62,7 @@ export default async function WordPressPageLayout({
 
   return (
     <main className="content-page">
-      <PageBanner page={page} />
+      {slug !== "contact" && <PageBanner page={page} />}
       {innerServicePageSlugs.has(slug) && <WhyMaxsourceSection page={page} />}
       {innerServicePageSlugs.has(slug) && <WhatWeBuildSection page={page} />}
       {innerServicePageSlugs.has(slug) && <OurStrengthsSection page={page} />}
@@ -68,6 +78,57 @@ export default async function WordPressPageLayout({
       {slug === "about-us" && <OurExpertiseSection page={page} />}
       {slug === "about-us" && <VisionMissionSection page={page} />}
       {slug === "about-us" && <WorkingWithMaxsourceSection page={page} />}
+      {slug === "partner-with-us" && <WhyMaxsourceSection page={page} />}
+      {slug === "partner-with-us" && <PartnershipSection page={page} />}
+      {slug === "partner-with-us" && <PartnershipBenefitsSection page={page} />}
+      {slug === "remote-teams" && <RemoteTeamTrustSection page={page} />}
+      {slug === "remote-teams" && <RemoteTeamBenefitsSection page={page} />}
+      {slug === "remote-teams" && <RemoteTeamExpertiseSection page={page} />}
+      {slug === "remote-teams" && (
+        <RemoteTeamTechnologies
+          pageId={page.id}
+          titleContent={page.acf?.technologies_title}
+          technologyContent={[
+            page.acf?.technologies_01,
+            page.acf?.technologies_02,
+            page.acf?.technologies_03,
+            page.acf?.technologies_04,
+            page.acf?.technologies_05,
+          ]}
+        />
+      )}
+      {slug === "remote-teams" && (
+        <div className="remote-teams-working">
+          <WorkingWithMaxsourceSection page={page} />
+        </div>
+      )}
+      {slug === "remote-teams" && (
+        <div className="remote-teams-industries">
+          <IndustriesWeServeSection page={page} />
+        </div>
+      )}
+      {slug === "remote-teams" && <RemoteTeamProcessSection page={page} />}
+      {slug === "remote-teams" && (
+        <div className="remote-teams-testimonials">
+          <TestimonialsSection/>
+        </div>
+      )}
+      {slug === "remote-teams" && <FaqSection page={page} />}
+      {slug === "career" && <WorkingWithMaxsourceSection page={page} />}
+      {slug === "career" && page.acf && (
+        <OpenRolesSection
+          pageId={page.id}
+          titleContent={page.acf.open_roles_title}
+          roles={Object.entries(page.acf)
+            .flatMap(([key, content]) => {
+              const match = /^open_roles_tab_(\d+)$/.exec(key);
+              return match && typeof content === "string" && content.trim()
+                ? [{ id: Number(match[1]), content }]
+                : [];
+            })
+            .sort((first, second) => first.id - second.id)}
+        />
+      )}
       {children}
       <WordPressPageContent page={page} />
       {slug === "home" && <TestimonialsSection />}

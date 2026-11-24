@@ -35,7 +35,7 @@ export default function WhyMaxsourceSection({ page }: { page: WordPressPage }) {
           smallTitle={eyebrow}
           title={heading ? stripWordPressTagsPreservingBreaks(heading) : undefined}
           description={description ? stripWordPressTagsPreservingBreaks(description) : undefined}
-          highlight={["Maxsource", "Since 2013"]}
+          highlight={["Maxsource", "Since 2013", "one-stop"]}
           titleId={heading ? sectionId : undefined}
         />
       </div>

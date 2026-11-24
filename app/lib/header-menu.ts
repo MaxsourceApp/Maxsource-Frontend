@@ -23,10 +23,15 @@ export async function getHeaderData(): Promise<HeaderData | null> {
   const apiBase = apiUrl.replace(/\/wp\/v2\/?$/, "");
   try {
     const response = await fetch(`${apiBase}/maxsource/v1/header-menu`, {
+      headers: { Accept: "application/json" },
       cache: "force-cache",
     });
     if (!response.ok) {
       throw new Error(`WordPress returned ${response.status} for the header menu.`);
+    }
+
+    if (!response.headers.get("content-type")?.includes("application/json")) {
+      throw new Error("WordPress returned a non-JSON response for the header menu.");
     }
 
     return await response.json() as HeaderData;

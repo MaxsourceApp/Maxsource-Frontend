@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import type { WordPressPage } from "../../lib/wordpress-pages";
 import SectionIntro from "../common/SectionIntro";
 import WordPressText, {
@@ -24,6 +27,7 @@ function parseFaqItems(content: string) {
 }
 
 export default function FaqSection({ page }: { page: WordPressPage }) {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
   const acf = page.acf;
   if (!acf) {
     return null;
@@ -53,30 +57,46 @@ export default function FaqSection({ page }: { page: WordPressPage }) {
         />
         {items.length > 0 && (
           <div className="faq-section__list">
-            {items.map((item, index) => (
-              <details
-                className="faq-section__item"
-                key={`${item.question}-${index}`}
-                open={index === 0}
-              >
-                <summary className="faq-section__question">
-                  <WordPressText value={item.question} />
-                </summary>
-                {item.answer && (
+            {items.map((item, index) => {
+              const isOpen = openIndex === index;
+              const answerId = `${sectionId}-answer-${index}`;
+
+              return (
+                <div className="faq-section__item" key={`${item.question}-${index}`}>
+                  <button
+                    className="faq-section__question"
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={answerId}
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                  >
+                    <WordPressText value={item.question} />
+                  </button>
                   <div
-                    className="faq-section__answer"
-                    dangerouslySetInnerHTML={{
-                      __html: normalizeWordPressHtml(
-                        wrapBareTextInParagraphs(
-                          item.answer,
-                          "faq-section__answer-text",
-                        ),
-                      ),
-                    }}
-                  />
-                )}
-              </details>
-            ))}
+                    className={`faq-section__answer-wrap${isOpen ? " faq-section__answer-wrap--open" : ""}`}
+                    id={answerId}
+                    aria-hidden={!isOpen}
+                    inert={!isOpen}
+                  >
+                    {item.answer && (
+                      <div className="faq-section__answer">
+                        <div
+                          className="faq-section__answer-content"
+                          dangerouslySetInnerHTML={{
+                            __html: normalizeWordPressHtml(
+                              wrapBareTextInParagraphs(
+                                item.answer,
+                                "faq-section__answer-text",
+                              ),
+                            ),
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

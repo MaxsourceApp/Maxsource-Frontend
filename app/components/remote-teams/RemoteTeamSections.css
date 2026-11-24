@@ -1,0 +1,673 @@
+.remote-team-trust {
+  padding: 18px 0;
+  background: #f3f2f0;
+}
+
+.remote-team-trust__inner {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.75fr) minmax(0, 3.25fr);
+  align-items: center;
+  gap: 30px;
+  width: min(84%, 1120px);
+  margin: 0 auto;
+}
+
+.remote-team-trust__heading {
+  margin: 0;
+  color: #777370;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.remote-team-trust__heading strong {
+  color: #171614;
+}
+
+.remote-team-trust__logos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.remote-team-trust__logos li {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.remote-team-trust__logo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.remote-team-benefits {
+  padding: 54px 0 64px;
+  background: #faf9f7;
+  color: #171614;
+}
+
+.remote-team-benefits__inner {
+  width: min(84%, 1120px);
+  margin: 0 auto;
+}
+
+.remote-team-benefits .section-intro {
+  margin: 0 auto 30px;
+}
+
+.remote-team-benefits .section-intro__title {
+  margin: 0 auto;
+}
+
+.remote-team-benefits .section-intro__description {
+  max-width: 720px;
+  margin: 12px auto 0;
+}
+
+.remote-team-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid #e4e1de;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.remote-team-benefits__card {
+  min-width: 0;
+  min-height: 180px;
+  padding: 22px 24px;
+}
+
+.remote-team-benefits__card:not(:nth-child(3n)) {
+  border-right: 1px solid #e4e1de;
+}
+
+.remote-team-benefits__card:nth-child(-n + 3) {
+  border-bottom: 1px solid #e4e1de;
+}
+
+.remote-team-benefits__icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin-bottom: 20px;
+  object-fit: contain;
+}
+
+.remote-team-benefits__card h3 {
+  margin: 0 0 12px;
+  color: #171614;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.remote-team-benefits__card p {
+  margin: 0;
+  color: #777370;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.remote-team-benefits__action {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.remote-team-expertise {
+  padding: 66px 0 58px;
+  background: #f5f4f2;
+  color: #171614;
+}
+
+.remote-team-expertise__inner {
+  width: min(calc(100% - 48px), 1120px);
+  margin: 0 auto;
+}
+
+.remote-team-expertise .section-intro {
+  max-width: 880px;
+  margin: 0 auto 30px;
+}
+
+.remote-team-expertise .section-intro__title {
+  max-width: 760px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.remote-team-expertise .section-intro__description {
+  max-width: 780px;
+  margin: 14px auto 0;
+}
+
+.remote-team-expertise__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.remote-team-process {
+  padding: 54px 0 58px;
+  background: #fff;
+  color: #171614;
+}
+
+.remote-team-process__inner {
+  width: min(84%, 1120px);
+  margin: 0 auto;
+}
+
+.remote-team-process .section-intro {
+  margin: 0 auto 38px;
+}
+
+.remote-team-process .section-intro__title {
+  margin: 0 auto;
+}
+
+.remote-team-process .section-intro__description {
+  max-width: 760px;
+  margin: 10px auto 0;
+  color: #777370;
+  font-size: 13px;
+}
+
+.remote-team-process__steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0 18px;
+  list-style: none;
+}
+
+.remote-team-process__step {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.remote-team-process__step:not(:last-child)::after {
+  position: absolute;
+  top: 25px;
+  left: calc(50% + 25px);
+  width: calc(100% - 50px);
+  height: 1px;
+  background: #dedad6;
+  content: "";
+}
+
+.remote-team-process__marker {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e1ded9;
+  border-radius: 50%;
+  background: #fff;
+  color: #777370;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.remote-team-process__step:first-child .remote-team-process__marker {
+  border-color: #ef2424;
+  background: #ef2424;
+  color: #fff;
+}
+
+.remote-team-process__label {
+  max-width: 150px;
+  margin-top: 12px;
+  color: #777370;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.remote-team-process__step:first-child .remote-team-process__label {
+  color: #171614;
+  font-weight: 600;
+}
+
+.remote-team-process__action {
+  display: flex;
+  justify-content: center;
+  margin-top: 38px;
+}
+
+@media (max-width: 760px) {
+  .remote-team-process__inner {
+    width: min(calc(100% - 36px), 1120px);
+  }
+
+  .remote-team-process__steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 28px;
+  }
+
+  .remote-team-process__step:nth-child(2)::after {
+    display: none;
+  }
+
+  .remote-team-trust__inner {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    width: min(calc(100% - 36px), 1120px);
+  }
+
+  .remote-team-trust__logos {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .remote-team-trust__logos li {
+    flex: 0 1 calc(33.333% - 20px);
+    justify-content: flex-start;
+  }
+
+  .remote-team-benefits__inner {
+    width: min(calc(100% - 36px), 1120px);
+  }
+
+  .remote-team-expertise__inner {
+    width: min(calc(100% - 48px), 1120px);
+  }
+
+  .remote-team-benefits__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .remote-team-expertise__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .remote-team-benefits__card:not(:nth-child(3n)) {
+    border-right: 0;
+  }
+
+  .remote-team-benefits__card:nth-child(odd) {
+    border-right: 1px solid #e4e1de;
+  }
+
+  .remote-team-benefits__card:nth-child(-n + 4) {
+    border-bottom: 1px solid #e4e1de;
+  }
+}
+
+@media (max-width: 520px) {
+  .remote-team-process {
+    padding: 48px 0;
+  }
+
+  .remote-team-process__steps {
+    grid-template-columns: 1fr;
+  }
+
+  .remote-team-process__step:not(:last-child)::after {
+    display: none;
+  }
+
+  .remote-team-benefits {
+    padding: 48px 0;
+  }
+
+  .remote-team-expertise {
+    padding: 48px 0;
+  }
+
+  .remote-team-expertise__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .remote-team-benefits__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .remote-team-benefits__card:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .remote-team-benefits__card:not(:last-child) {
+    border-bottom: 1px solid #e4e1de;
+  }
+
+  .remote-team-trust__logos li {
+    flex-basis: calc(50% - 14px);
+  }
+}
+
+.remote-team-technologies {
+  padding: 62px 0 58px;
+  background: #0c0b0a;
+  color: #fff;
+}
+
+.remote-team-technologies__inner {
+  width: min(84%, 1120px);
+  margin: 0 auto;
+}
+
+.remote-team-technologies .section-intro {
+  max-width: 700px;
+  margin: 0 auto 32px;
+}
+
+.remote-team-technologies .section-intro__title {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.remote-team-technologies .section-intro__description {
+  max-width: 660px;
+  margin: 14px auto 0;
+}
+
+.remote-team-technologies__list {
+  display: flex;
+  gap: 10px;
+}
+
+.remote-team-technologies__item {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  min-width: 66px;
+  flex-direction: column;
+  border: 1px solid #272622;
+  border-radius: 16px;
+  background: #11100e;
+  transition:
+    flex-grow 0.45s,
+    flex-basis 0.45s,
+    border-color 0.3s,
+    background 0.3s;
+}
+
+.remote-team-technologies__item--open {
+  width: 100%;
+  min-width: 0;
+  border-color: #511313;
+  background:
+    radial-gradient(ellipse at 82% 12%, rgb(111 0 0 / 78%), transparent 58%),
+    linear-gradient(135deg, #180d0c, #1a0d0c);
+}
+
+.remote-team-technologies__item--open::after {
+  position: absolute;
+  top: -18px;
+  right: 16px;
+  color: rgb(239 36 36 / 10%);
+  content: attr(data-number);
+  font-size: clamp(110px, 14vw, 190px);
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.remote-team-technologies__trigger {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 20px 24px 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.remote-team-technologies__trigger:focus-visible {
+  outline: 2px solid #ef2424;
+  outline-offset: -4px;
+}
+
+.remote-team-technologies__number {
+  color: #6f6d68;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.remote-team-technologies__item--open .remote-team-technologies__number {
+  color: #ef2424;
+}
+
+.remote-team-technologies__item-title {
+  display: block;
+  color: #a3a19b;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: -0.42px;
+  white-space: nowrap;
+}
+
+.remote-team-technologies__item:not(.remote-team-technologies__item--open)
+  .remote-team-technologies__trigger {
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 12px;
+}
+
+.remote-team-technologies__item:not(.remote-team-technologies__item--open)
+  .remote-team-technologies__item-title {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.remote-team-technologies__item--open .remote-team-technologies__item-title {
+  color: #fff;
+  font-size: 42px;
+  line-height: 42.84px;
+  letter-spacing: -1.68px;
+}
+
+.remote-team-technologies__panel {
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+  flex: 1 1 auto;
+  padding: 12px 24px 24px;
+  color: #c3bfbb;
+  animation: remote-team-technologies-panel-in 300ms ease both;
+}
+
+.remote-team-technologies__panel[aria-hidden="true"] {
+  display: none;
+}
+
+.remote-team-technologies__description {
+  max-width: 650px;
+  margin: 0;
+  color: #d6d4ce;
+  font-size: 16.5px;
+  line-height: 26.4px;
+}
+
+.remote-team-technologies__benefits {
+  display: grid;
+  gap: 8px;
+  margin: 20px 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.remote-team-technologies__benefits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: #fff;
+  font-size: 15.5px;
+  line-height: 23.25px;
+}
+
+.remote-team-technologies__benefits li::before {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ef1717;
+  color: #fff;
+  content: "✓";
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.remote-team-technologies__stack h3 {
+  margin: 0 0 8px;
+  color: #8f8d87;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.76px;
+  text-transform: uppercase;
+}
+
+.remote-team-technologies__stack ul {
+  display: flex;
+  width: 60%;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.remote-team-technologies__stack li {
+  padding: 4px 10px;
+  border: 1px solid #3a3835;
+  border-radius: 999px;
+  color: #d6d4ce;
+  font-size: 12.4px;
+  line-height: 18.75px;
+}
+
+.remote-team-technologies__action {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+@keyframes remote-team-technologies-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 760px) {
+  .remote-team-technologies__inner {
+    width: min(calc(100% - 36px), 1120px);
+  }
+
+  .remote-team-technologies__stack ul {
+    width: 100%;
+  }
+
+  .remote-team-technologies__list {
+    min-height: 300px;
+    gap: 7px;
+  }
+
+  .remote-team-technologies__item {
+    min-width: 52px;
+    flex-basis: 52px;
+  }
+
+  .remote-team-technologies__trigger {
+    padding: 18px 18px 0;
+  }
+
+  .remote-team-technologies__item:not(.remote-team-technologies__item--open)
+    .remote-team-technologies__trigger {
+    padding: 18px 8px;
+  }
+
+  .remote-team-technologies__item--open .remote-team-technologies__item-title {
+    font-size: 24px;
+  }
+
+  .remote-team-technologies__panel {
+    padding: 12px 18px 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .remote-team-technologies {
+    padding: 48px 0;
+  }
+
+  .remote-team-technologies__list {
+    min-height: 0;
+    flex-direction: column;
+  }
+
+  .remote-team-technologies__item,
+  .remote-team-technologies__item--open {
+    min-width: 0;
+    flex: none;
+  }
+
+  .remote-team-technologies__trigger,
+  .remote-team-technologies__item:not(.remote-team-technologies__item--open)
+    .remote-team-technologies__trigger {
+    min-height: 64px;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+  }
+
+  .remote-team-technologies__item-title,
+  .remote-team-technologies__item:not(.remote-team-technologies__item--open)
+    .remote-team-technologies__item-title {
+    writing-mode: initial;
+    transform: none;
+  }
+
+  .remote-team-technologies__item--open .remote-team-technologies__item-title {
+    font-size: 21px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .remote-team-technologies__item {
+    transition: none;
+  }
+
+  .remote-team-technologies__panel {
+    animation: none;
+  }
+}

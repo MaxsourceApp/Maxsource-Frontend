@@ -1,8 +1,11 @@
-import type { WordPressPage } from "../../lib/wordpress-pages";
 import {
   normalizeWordPressHtml,
   wrapBareTextInParagraphs,
 } from "./WordPressText";
+
+interface CallToActionPage {
+  acf?: { call_to_action?: string | null } | null;
+}
 
 function emphasizeHeading(content: string) {
   return content.replace(
@@ -64,7 +67,7 @@ function preserveRepeatedSpaces(content: string) {
     .join("");
 }
 
-export default function CallToActionSection({ page }: { page: WordPressPage }) {
+export default function CallToActionSection({ page }: { page: CallToActionPage }) {
   const content = page.acf?.call_to_action;
   if (!content?.trim()) {
     return null;
