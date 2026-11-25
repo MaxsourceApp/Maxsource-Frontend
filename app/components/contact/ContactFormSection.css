@@ -198,7 +198,7 @@
 .contact-form__service-options button, .contact-form__engagement-options button {
     color: #6B6A67;
     cursor: pointer;
-    min-height: 38px;
+    min-height: 37px;
     font: inherit;
     letter-spacing: 0;
     text-align: left;
