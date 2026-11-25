@@ -44,3 +44,7 @@ next-env.d.ts
 
 # Build archives
 out.zip
+
+# Protect GHL credentials
+/public/api/.htaccess
+/out/api/.htaccess

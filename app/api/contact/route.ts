@@ -27,6 +27,7 @@ const allowedReferralSources = new Set([
   "Referral",
   "LinkedIn",
   "Social Media",
+  "Existing Client",
   "Other",
 ]);
 
@@ -140,6 +141,7 @@ export async function POST(request: Request) {
 
   const ghlPayload = {
     locationId: config.locationId,
+    tags: ["contact-us"],
     firstName: payload.firstName.trim(),
     lastName: payload.lastName.trim(),
     email: payload.email.trim().toLowerCase(),

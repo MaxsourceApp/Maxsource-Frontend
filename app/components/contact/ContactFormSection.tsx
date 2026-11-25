@@ -83,7 +83,7 @@ export default function ContactFormSection() {
     }
 
     setIsSubmitting(true);
-    void fetch("/api/contact", {
+    void fetch(process.env.NEXT_PUBLIC_CONTACT_API_URL || "/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -94,7 +94,15 @@ export default function ContactFormSection() {
     })
       .then(async (response) => {
         if (!response.ok) {
-          const result: unknown = await response.json();
+        const responseBody = await response.text();
+        let result: unknown;
+        try {
+          result = JSON.parse(responseBody) as unknown;
+        } catch {
+          throw new Error(
+            `The contact service returned an unexpected response (${response.status}). Please try again.`,
+          );
+        }
           const message =
             typeof result === "object" &&
             result !== null &&
@@ -103,6 +111,16 @@ export default function ContactFormSection() {
               ? result.error
               : "We could not send your enquiry. Please try again.";
           throw new Error(message);
+        }
+
+        const result: unknown = await response.json();
+        if (
+          typeof result !== "object" ||
+          result === null ||
+          !("ok" in result) ||
+          result.ok !== true
+        ) {
+          throw new Error("We could not send your enquiry. Please try again.");
         }
 
         setIsSubmitted(true);

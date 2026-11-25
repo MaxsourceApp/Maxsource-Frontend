@@ -20,6 +20,12 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## cPanel static deployment
+
+The static export uses `public/api/contact.php` as the contact form endpoint. The cPanel host must support PHP with cURL enabled. The deploy workflow builds the frontend to use `/api/contact.php`, while local development continues to use the Next.js API route. For a manual build, set `NEXT_PUBLIC_CONTACT_API_URL=/api/contact.php` before running `npm run build`.
+
+Configure `GHL_API_TOKEN` and `GHL_LOCATION_ID` as PHP runtime environment variables in the cPanel hosting environment. These are server-only secrets; do not add them to GitHub Actions build variables, the static build, or frontend environment variables. If your cPanel account cannot provide PHP environment variables, ask the hosting provider for a secure server-side configuration method. After deployment, verify that `https://your-domain.example/api/contact.php` responds with JSON (a GET request should return HTTP 405).
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

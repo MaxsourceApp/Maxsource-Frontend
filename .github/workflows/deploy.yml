@@ -28,11 +28,16 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_WORDPRESS_API_URL: https://maxsource-dev.maxsourceworld.com/backend/wp-json/wp/v2
+          NEXT_PUBLIC_CONTACT_API_URL: /api/contact.php
 
       - name: Verify static export
         run: |
           if [ ! -s out/index.html ]; then
             echo "::error::Static export is missing out/index.html. Check output: export in next.config.ts."
+            exit 1
+          fi
+          if [ ! -s out/api/contact.php ]; then
+            echo "::error::Static export is missing the PHP contact endpoint."
             exit 1
           fi
           
