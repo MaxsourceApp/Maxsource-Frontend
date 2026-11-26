@@ -15,6 +15,11 @@ export interface WordPressPage {
     our_core_services?: string;
     core_service_why_maxsource_title?: string;
     core_service_why_maxsource?: string;
+    engagement_models_title?: string;
+    engagement_models_tab_1?: string;
+    engagement_models_tab_2?: string;
+    engagement_models_tab_3?: string;
+    engagement_models_tab_4?: string;
     how_we_deliver_title?: string;
     how_we_deliver_column_1?: string;
     how_we_deliver_column_2?: string;

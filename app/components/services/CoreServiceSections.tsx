@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Fragment } from "react";
 import type { WordPressPage } from "../../lib/wordpress-pages";
 import SectionIntro from "../common/SectionIntro";
 import {
@@ -10,6 +11,9 @@ import "./CoreServiceSections.css";
 const headingPattern = /<h2\b[^>]*>([\s\S]*?)<\/h2>/i;
 const serviceHeadingPattern = /<h4\b[^>]*>([\s\S]*?)<\/h4>/i;
 const reasonHeadingPattern = /<h5\b[^>]*>([\s\S]*?)<\/h5>/gi;
+const engagementHeadingPattern = /<h3\b[^>]*>([\s\S]*?)<\/h3>/i;
+const includedHeadingPattern =
+  /(?:<h[4-6]\b[^>]*>)?\s*WHAT(?:'|’|&rsquo;|&#0*39;)S\s+INCLUDED\s*(?:<\/h[4-6]>)?/i;
 
 function decodeTextEntities(value: string) {
   return value
@@ -107,6 +111,44 @@ function getWhyCards(content: string) {
       description,
     };
   });
+}
+
+function getEngagementTab(content: string, index: number) {
+  const normalizedContent = normalizeWordPressHtml(content).replace(/\r\n?/g, "\n");
+  const headingMatch = engagementHeadingPattern.exec(normalizedContent);
+  const initialText = getPlainText(
+    normalizedContent.slice(0, headingMatch?.index ?? 0),
+  );
+  const initialMatch = /^(\d+)\s+(.+)$/.exec(initialText);
+  const bodyStart = headingMatch
+    ? headingMatch.index + headingMatch[0].length
+    : 0;
+  const body = normalizedContent.slice(bodyStart);
+  const includedMatch = includedHeadingPattern.exec(body);
+  const descriptionContent = includedMatch
+    ? body.slice(0, includedMatch.index)
+    : body;
+  const includedContent = includedMatch
+    ? body.slice(includedMatch.index + includedMatch[0].length)
+    : "";
+  const includedText = includedContent
+    .replace(/<\/li\s*>/gi, "\n")
+    .replace(/<\/p\s*>/gi, "\n")
+    .replace(/<li\b[^>]*>/gi, "")
+    .replace(/<p\b[^>]*>/gi, "");
+  const included = stripWordPressTagsPreservingBreaks(includedText)
+    .replace(/<br\s*\/?>/gi, "\n")
+    .split(/\r?\n/)
+    .map(getPlainText)
+    .filter(Boolean);
+
+  return {
+    number: initialMatch?.[1] ?? String(index + 1).padStart(2, "0"),
+    label: initialMatch?.[2] ?? getPlainText(headingMatch?.[1] ?? ""),
+    title: getPlainText(headingMatch?.[1] ?? initialMatch?.[2] ?? ""),
+    description: getPlainText(descriptionContent),
+    included,
+  };
 }
 
 export function CoreOurServicesSection({ page }: { page: WordPressPage }) {
@@ -209,6 +251,114 @@ export function CoreServiceWhySection({ page }: { page: WordPressPage }) {
                 </div>
               </article>
             ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+export function EngagementModelsSection({ page }: { page: WordPressPage }) {
+  const acf = page.acf;
+  if (!acf) {
+    return null;
+  }
+
+  const intro = getSectionIntro(acf.engagement_models_title);
+  const tabs = [
+    acf.engagement_models_tab_1,
+    acf.engagement_models_tab_2,
+    acf.engagement_models_tab_3,
+    acf.engagement_models_tab_4,
+  ]
+    .filter((content): content is string => Boolean(content?.trim()))
+    .map(getEngagementTab);
+
+  if (!intro.title && tabs.length === 0) {
+    return null;
+  }
+
+  const sectionId = `engagement-models-${page.id}`;
+  const radioGroupName = `engagement-model-${page.id}`;
+
+  return (
+    <section
+      className="engagement-models"
+      aria-labelledby={intro.title ? sectionId : undefined}
+      aria-label={intro.title ? undefined : intro.eyebrow || "Engagement models"}
+    >
+      <div className="engagement-models__inner">
+        <SectionIntro
+          className="section-intro--centered"
+          smallTitle={intro.eyebrow}
+          title={intro.title}
+          description={intro.description}
+          highlight="full delivery"
+          titleId={sectionId}
+        />
+
+        {tabs.length > 0 && (
+          <fieldset className="engagement-models__selector">
+            <legend className="engagement-models__visually-hidden">
+              Choose an engagement model
+            </legend>
+            {tabs.map((tab, index) => {
+              const inputId = `${radioGroupName}-${index}`;
+              return (
+                <Fragment key={`${page.id}-engagement-${index}`}>
+                  <input
+                    className="engagement-models__input"
+                    id={inputId}
+                    type="radio"
+                    name={radioGroupName}
+                    value={index}
+                    defaultChecked={index === 0}
+                  />
+                  <label className="engagement-models__option" htmlFor={inputId}>
+                    <span>{tab.number}</span>
+                    <strong>{tab.label}</strong>
+                    <svg
+                      className="engagement-models__arrow"
+                      viewBox="0 0 20 20"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 14 14 6M7 6h7v7" />
+                    </svg>
+                  </label>
+                </Fragment>
+              );
+            })}
+
+            <div className="engagement-models__panels">
+              {tabs.map((tab, index) => (
+                <article
+                  className="engagement-models__panel"
+                  data-engagement-index={index}
+                  key={`${page.id}-engagement-panel-${index}`}
+                >
+                  {tab.title && <h3>{tab.title}</h3>}
+                  {tab.description && <p>{tab.description}</p>}
+                  {tab.included.length > 0 && (
+                    <div className="engagement-models__included">
+                      <p>What&apos;s included</p>
+                      <ul>
+                        {tab.included.map((item, itemIndex) => (
+                          <li key={`${item}-${itemIndex}`}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </article>
+              ))}
+            </div>
+          </fieldset>
+        )}
+
+        {tabs.length > 0 && (
+          <div className="engagement-models__action">
+            <Link className="button" href="/contact">
+              Discuss Your Model
+            </Link>
           </div>
         )}
       </div>

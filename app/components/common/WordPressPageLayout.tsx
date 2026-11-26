@@ -9,6 +9,7 @@ import BenefitsSection from "../services/BenefitsSection";
 import {
   CoreOurServicesSection,
   CoreServiceWhySection,
+  EngagementModelsSection,
 } from "../services/CoreServiceSections";
 import FaqSection from "../services/FaqSection";
 import IndustriesWeServeSection from "../home/IndustriesWeServeSection";
@@ -116,6 +117,8 @@ export default async function WordPressPageLayout({
             <WhatWeBuildSection page={page} />
           </>
         )}
+      {isCoreServicePage && <EngagementModelsSection page={page} />}
+      {isCoreServicePage && <HowItWorksSection />}
       {innerServicePageSlugs.has(slug) && <OurStrengthsSection page={page} />}
       {innerServicePageSlugs.has(slug) && <BenefitsSection page={page} />}
       {/* Selected Work is reserved for inner service pages. */}
