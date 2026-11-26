@@ -41,19 +41,3 @@
   color: var(--highlighted-red);
 }
 
-@media (max-width: 900px) {
-  .sitemap-page__links {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 600px) {
-  .sitemap-page__content {
-    width: min(100% - 36px, 560px);
-    padding: 44px 0 64px;
-  }
-
-  .sitemap-page__links {
-    grid-template-columns: 1fr;
-  }
-}

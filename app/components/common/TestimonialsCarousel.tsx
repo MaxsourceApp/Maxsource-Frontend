@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface Testimonial {
   id: number;
@@ -18,6 +18,7 @@ export default function TestimonialsCarousel({
 }) {
   const [cardsPerSlide, setCardsPerSlide] = useState(3);
   const [activeSlide, setActiveSlide] = useState(0);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 760px)");
@@ -34,7 +35,25 @@ export default function TestimonialsCarousel({
 
   return (
     <div className="testimonials-carousel">
-      <div className="testimonials-carousel__viewport" aria-live="polite">
+      <div
+        className="testimonials-carousel__viewport"
+        aria-live="polite"
+        onTouchStart={(event) => {
+          touchStartX.current = event.touches[0]?.clientX ?? null;
+        }}
+        onTouchEnd={(event) => {
+          const startX = touchStartX.current;
+          const endX = event.changedTouches[0]?.clientX;
+          touchStartX.current = null;
+          if (startX === null || endX === undefined || Math.abs(startX - endX) < 40) {
+            return;
+          }
+
+          setActiveSlide((slide) =>
+            Math.max(0, Math.min(slide + (startX > endX ? 1 : -1), slideCount - 1)),
+          );
+        }}
+      >
         <div
           className="testimonials-carousel__track"
           style={{
@@ -78,16 +97,19 @@ export default function TestimonialsCarousel({
 
       {slideCount > 1 && (
         <div className="testimonials-carousel__pagination" aria-label="Testimonial slides">
-          {Array.from({ length: slideCount }, (_, index) => (
-            <button
-              className={index === currentSlide ? "is-active" : ""}
-              type="button"
-              key={index}
-              aria-label={`Show testimonial slide ${index + 1}`}
-              aria-pressed={index === currentSlide}
-              onClick={() => setActiveSlide(index)}
-            />
-          ))}
+          <div className="carousel-pagination-dots">
+            {Array.from({ length: slideCount }, (_, index) => (
+              <button
+                className={index === currentSlide ? "is-active" : ""}
+                type="button"
+                key={index}
+                aria-label={`Show testimonial slide ${index + 1}`}
+                aria-pressed={index === currentSlide}
+                onClick={() => setActiveSlide(index)}
+              />
+            ))}
+          </div>
+          <span className="carousel-swipe-hint">Swipe <span aria-hidden="true">→</span></span>
         </div>
       )}
     </div>

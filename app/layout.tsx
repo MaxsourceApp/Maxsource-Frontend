@@ -5,6 +5,7 @@ import Footer from "./components/common/Footer";
 import { getHeaderData } from "./lib/header-menu";
 import { getThemePresentation } from "./lib/theme-settings";
 import "./globals.css";
+import "./global-responsive.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

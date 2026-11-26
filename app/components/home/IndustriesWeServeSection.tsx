@@ -1,4 +1,5 @@
 import SectionIntro from "../common/SectionIntro";
+import SwipeCarousel from "../common/SwipeCarousel";
 import {
   normalizeWordPressHtml,
   wrapBareTextInParagraphs,
@@ -42,7 +43,7 @@ export default function IndustriesWeServeSection({ page }: { page: WordPressPage
           titleId="industries-title"
         />
         {industries.length > 0 && (
-          <div className="industries-we-serve__grid">
+          <SwipeCarousel className="industries-we-serve__grid" label="Industries">
             {industries.map((industry) => (
               <article
                 className="industries-we-serve__card"
@@ -57,7 +58,7 @@ export default function IndustriesWeServeSection({ page }: { page: WordPressPage
                 }}
               />
             ))}
-          </div>
+          </SwipeCarousel>
         )}
       </div>
     </section>

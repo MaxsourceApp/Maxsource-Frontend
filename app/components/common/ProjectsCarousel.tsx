@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { ProjectPost } from "../../lib/projects";
 import { normalizeWordPressHtml } from "./WordPressText";
@@ -11,26 +11,57 @@ interface ProjectsCarouselProps {
 
 export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
   const [activePage, setActivePage] = useState(0);
-  const pageCount = Math.max(1, projects.length - 1);
+  const [cardsPerPage, setCardsPerPage] = useState(2);
+  const touchStartX = useRef<number | null>(null);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 760px)");
+    const updateCardsPerPage = () => setCardsPerPage(mediaQuery.matches ? 1 : 2);
+
+    updateCardsPerPage();
+    mediaQuery.addEventListener("change", updateCardsPerPage);
+    return () => mediaQuery.removeEventListener("change", updateCardsPerPage);
+  }, []);
+
+  const pageCount = Math.max(1, projects.length - cardsPerPage + 1);
+  const currentPage = Math.min(activePage, pageCount - 1);
   const slideWidth = 100 / pageCount;
 
   return (
     <div className="projects-carousel">
-      <div className="projects-carousel__viewport" aria-live="polite">
+      <div
+        className="projects-carousel__viewport"
+        aria-live="polite"
+        onTouchStart={(event) => {
+          touchStartX.current = event.touches[0]?.clientX ?? null;
+        }}
+        onTouchEnd={(event) => {
+          const startX = touchStartX.current;
+          const endX = event.changedTouches[0]?.clientX;
+          touchStartX.current = null;
+          if (startX === null || endX === undefined || Math.abs(startX - endX) < 40) {
+            return;
+          }
+
+          setActivePage((page) =>
+            Math.max(0, Math.min(page + (startX > endX ? 1 : -1), pageCount - 1)),
+          );
+        }}
+      >
         <div
           className="projects-carousel__track"
           style={{
             width: `${pageCount * 100}%`,
-            transform: `translateX(-${activePage * slideWidth}%)`,
+            transform: `translateX(-${currentPage * slideWidth}%)`,
           }}
         >
           {Array.from({ length: pageCount }, (_, index) => (
             <div
-              className={`projects-carousel__slide${projects.length === 1 ? " is-single" : ""}`}
+              className={`projects-carousel__slide${cardsPerPage === 1 ? " is-single" : ""}`}
               key={index}
               style={{ width: `${slideWidth}%` }}
             >
-              {projects.slice(index, index + 2).map((project) => {
+              {projects.slice(index, index + cardsPerPage).map((project) => {
                 const href = `/projects/${encodeURIComponent(project.slug)}`;
                 const image = project._embedded?.["wp:featuredmedia"]?.[0];
 
@@ -87,16 +118,19 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
 
       {pageCount > 1 && (
         <div className="projects-carousel__pagination" aria-label="Project pages">
-          {Array.from({ length: pageCount }, (_, index) => (
-            <button
-              className={index === activePage ? "is-active" : ""}
-              type="button"
-              key={index}
-              aria-label={`Show project group ${index + 1}`}
-              aria-pressed={index === activePage}
-              onClick={() => setActivePage(index)}
-            />
-          ))}
+          <div className="carousel-pagination-dots">
+            {Array.from({ length: pageCount }, (_, index) => (
+              <button
+                className={index === currentPage ? "is-active" : ""}
+                type="button"
+                key={index}
+                aria-label={`Show project group ${index + 1}`}
+                aria-pressed={index === currentPage}
+                onClick={() => setActivePage(index)}
+              />
+            ))}
+          </div>
+          <span className="carousel-swipe-hint">Swipe <span aria-hidden="true">→</span></span>
         </div>
       )}
     </div>

@@ -67,26 +67,6 @@
     line-height: 26.4px;
 }
 
-@media (max-width: 760px) {
-  .global-delivery__inner {
-    width: min(100% - 36px, 620px);
-  }
-
-  .global-delivery .section-intro {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  .global-delivery__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .global-delivery__card + .global-delivery__card {
-    border-top: 1px solid #e9e7e4;
-    border-left: 0;
-  }
-}
-
 .our-presence {
   background: #fff;
 }
@@ -344,25 +324,3 @@ p.our-presence-quote__eyebrow::before {
     letter-spacing: -0.6px;
 }
 
-@media (max-width: 760px) {
-  .our-presence__inner {
-    width: min(100% - 36px, 620px);
-  }
-
-  .our-presence .section-intro {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  .our-presence__tabs {
-    grid-template-columns: 1fr;
-  }
-
-  .our-presence__panel {
-    grid-template-columns: 1fr;
-  }
-
-  .our-presence__services li {
-    font-size: 13px;
-  }
-}

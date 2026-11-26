@@ -258,49 +258,6 @@ ul.wp-block-list li {
   outline-offset: 3px;
 }
 
-@media (max-width: 760px) {
-  .blog-section {
-    padding-top: 36px;
-  }
-
-  .blog-featured {
-    grid-template-columns: 1fr;
-  }
-
-  .blog-featured__main {
-    margin-bottom: 8px;
-  }
-
-  .blog-featured__side {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-  }
-
-  .blog-featured__side-title {
-    grid-column: 1 / -1;
-  }
-
-  .blog-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 520px) {
-  .blog-featured,
-  .blog-browse {
-    width: min(calc(100% - 28px), 1120px);
-  }
-
-  .blog-featured__side,
-  .blog-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .blog-card h3 {
-    min-height: 0;
-  }
-}
-
 .blog-post-page {
   background: #fcfbf9;
   color: #242321;
@@ -665,38 +622,6 @@ p.wp-block-paragraph strong {
   outline-offset: 3px;
 }
 
-@media (max-width: 760px) {
-  .blog-post-hero {
-    min-height: 250px;
-    padding: 24px 0;
-  }
-
-  .blog-post-hero__inner {
-    width: min(calc(100% - 36px), 1120px);
-  }
-
-  .blog-post-layout {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    width: min(calc(100% - 36px), 760px);
-    padding-top: 34px;
-  }
-
-  .blog-post-toc {
-    position: static;
-  }
-
-  .blog-post-toc__cta {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .blog-post-faq__answer-wrap {
-    transition: none;
-  }
-}
-
 .blog-latest {
   padding: 38px 0 42px;
   background: #f3f1ef;
@@ -835,29 +760,3 @@ p.wp-block-paragraph strong {
   outline-offset: 3px;
 }
 
-@media (max-width: 760px) {
-  .blog-latest__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px 16px;
-  }
-}
-
-@media (max-width: 520px) {
-  .blog-latest__inner {
-    width: min(calc(100% - 28px), 1120px);
-  }
-
-  .blog-latest__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .blog-latest__header {
-    align-items: flex-start;
-  }
-
-  .blog-latest__all {
-    min-height: 33px;
-    padding: 0 12px;
-    font-size: 11px;
-  }
-}

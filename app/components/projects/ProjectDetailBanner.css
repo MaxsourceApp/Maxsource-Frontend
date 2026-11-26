@@ -179,30 +179,3 @@
   filter: drop-shadow(0 24px 28px rgb(0 0 0 / 42%));
 }
 
-@media (max-width: 760px) {
-  .project-detail-banner {
-    min-height: auto;
-    padding: 64px 24px;
-  }
-
-  .project-detail-banner__inner {
-    grid-template-columns: 1fr;
-    gap: 42px;
-  }
-
-  .project-detail-banner__eyebrow {
-    margin-bottom: 24px;
-  }
-
-  .project-detail-banner__description {
-    margin-top: 20px;
-  }
-
-  .project-detail-banner__button {
-    margin-top: 28px;
-  }
-
-  .project-detail-banner__visual img {
-    max-height: 360px;
-  }
-}

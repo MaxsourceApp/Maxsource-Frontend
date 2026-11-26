@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SectionIntro from "./SectionIntro";
+import SwipeCarousel from "./SwipeCarousel";
 import {
   normalizeWordPressHtml,
   wrapBareTextInParagraphs,
@@ -46,7 +47,7 @@ export default async function HowItWorksSection() {
           titleId="how-it-works-title"
         />
         {steps.length > 0 && (
-          <div className="how-it-works-section__steps">
+          <SwipeCarousel className="how-it-works-section__steps" label="How it works steps">
             {steps.map((step) => (
               <article
                 className="how-it-works-section__step"
@@ -61,7 +62,7 @@ export default async function HowItWorksSection() {
                 }}
               />
             ))}
-          </div>
+          </SwipeCarousel>
         )}
         {steps.length > 0 && (
           <div className="how-it-works-section__action">

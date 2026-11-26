@@ -156,8 +156,3 @@
   font-size: 14px;
 }
 
-@media (max-width: 760px) {
-  .work-grid {
-    grid-template-columns: 1fr;
-  }
-}

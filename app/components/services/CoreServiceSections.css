@@ -392,31 +392,3 @@ label.engagement-models__option:hover span {
   margin-top: 28px;
 }
 
-@media (max-width: 700px) {
-  .core-our-services__inner,
-  .core-service-why__inner,
-  .engagement-models__inner {
-    width: min(100% - 36px, 620px);
-  }
-
-  .core-our-services__grid,
-  .core-service-why__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .engagement-models__selector {
-    grid-template-columns: 1fr;
-  }
-
-  .engagement-models__panels {
-    grid-column: 1;
-    grid-row: auto;
-    min-height: 0;
-  }
-}
-
-@media (max-width: 460px) {
-  .engagement-models__included ul {
-    grid-template-columns: 1fr;
-  }
-}

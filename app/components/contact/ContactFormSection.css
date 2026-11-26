@@ -379,37 +379,3 @@ background: var(--button-color);
   line-height: 1.6;
 }
 
-@media (max-width: 800px) {
-  .contact-form-section {
-    grid-template-columns: 1fr;
-  }
-
-  .contact-form-section__intro {
-    padding: 42px max(24px, calc((100% - 620px) / 2));
-  }
-
-  .contact-form-section__intro h2,
-  .contact-form-section__description,
-  .contact-form-section__next {
-    max-width: 620px;
-  }
-
-  .contact-form-section__form-area {
-    padding: 32px 20px;
-  }
-}
-
-@media (max-width: 520px) {
-  .contact-form {
-    padding: 20px 16px;
-  }
-
-  .contact-form__service-options,
-  .contact-form__fields {
-    grid-template-columns: 1fr;
-  }
-
-  .contact-form__actions {
-    justify-content: space-between;
-  }
-}

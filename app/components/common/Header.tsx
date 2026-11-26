@@ -24,6 +24,31 @@ function isAboutMenu(item: MenuItem) {
   return /^about(?:\s+us)?$/i.test(item.title.trim()) || /\/about-us(?:\/|$|[?#])/i.test(item.url);
 }
 
+function isServicesMenu(item: MenuItem) {
+  return /^services?$/i.test(item.title.trim()) || /\/services(?:\/|$|[?#])/i.test(item.url);
+}
+
+function isMainMenuDropdown(item: MenuItem) {
+  return isServicesMenu(item) || isAboutMenu(item);
+}
+
+function MainMenuDropdownArrow({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="#fff"
+      width="15px"
+      height="15px"
+      viewBox="-6.5 0 32 32"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z" />
+    </svg>
+  );
+}
+
 function MegaMenuArrow() {
   return (
     <svg
@@ -79,12 +104,179 @@ function MenuLink({
   );
 }
 
+function MobileNavigation({
+  items,
+  contactItem,
+  onNavigate,
+}: {
+  items: MenuItem[];
+  contactItem?: MenuItem;
+  onNavigate: () => void;
+}) {
+  const [activeMenu, setActiveMenu] = useState<MenuItem | null>(null);
+  const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
+
+  const contactHref = getMenuHref(contactItem?.url || "", "/contact");
+
+  return (
+    <div className="mobile-navigation">
+      {activeMenu ? (
+        <div className="mobile-navigation__submenu">
+          <button
+            className="mobile-navigation__back"
+            type="button"
+            onClick={() => {
+              setActiveMenu(null);
+              setActiveCategoryId(null);
+            }}
+          >
+            <span aria-hidden="true">‹</span> Main menu
+          </button>
+          <h2>{activeMenu.title}</h2>
+
+          {isAboutMenu(activeMenu) ? (
+            <ul className="mobile-navigation__links">
+              {activeMenu.children.map((item) => (
+                <li key={item.id}>
+                  <MenuLink item={item} onNavigate={onNavigate} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="mobile-navigation__categories">
+              {activeMenu.children.map((category) => {
+                const isExpanded = activeCategoryId === category.id;
+                const hasChildren = category.children.length > 0;
+
+                return (
+                  <section
+                    className={`mobile-navigation__category${isExpanded ? " is-expanded" : ""}`}
+                    key={category.id}
+                  >
+                    <div className="mobile-navigation__category-heading">
+                      <MenuLink item={category} onNavigate={onNavigate} />
+                      {hasChildren && (
+                        <button
+                          type="button"
+                          aria-label={`${isExpanded ? "Collapse" : "Expand"} ${category.title}`}
+                          aria-expanded={isExpanded}
+                          onClick={() =>
+                            setActiveCategoryId(isExpanded ? null : category.id)
+                          }
+                        >
+                          <svg
+                            viewBox="0 0 16 16"
+                            aria-hidden="true"
+                            className={isExpanded ? "is-expanded" : ""}
+                          >
+                            <path d="m3 6 5 5 5-5" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                    {hasChildren && isExpanded && category.description && (
+                      <p className="mobile-navigation__category-description">
+                        {category.description}
+                      </p>
+                    )}
+                    {hasChildren && isExpanded && (
+                      <ul className="mobile-navigation__links">
+                        {category.children.map((child) => (
+                          <li key={child.id}>
+                            <MenuLink item={child} onNavigate={onNavigate} />
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </section>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ) : (
+        <ul className="mobile-navigation__main">
+          {items.map((item) => (
+            <li key={item.id}>
+              <div className="mobile-navigation__main-row">
+                <MenuLink item={item} onNavigate={onNavigate} />
+                {item.children.length > 0 && (
+                  <button
+                    type="button"
+                    aria-label={`Open ${item.title} submenu`}
+                    onClick={() => {
+                      setActiveMenu(item);
+                      setActiveCategoryId(item.children[0]?.id ?? null);
+                    }}
+                  >
+                    {isMainMenuDropdown(item) ? (
+                      <MainMenuDropdownArrow className="mobile-navigation__main-arrow" />
+                    ) : (
+                      <svg viewBox="0 0 16 16" aria-hidden="true">
+                        <path d="m3 6 5 5 5-5" />
+                      </svg>
+                    )}
+                  </button>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {activeMenu ? (
+        <aside className="mobile-navigation__contact">
+          <p className="mobile-navigation__eyebrow"><span /> Let&apos;s discuss</p>
+          <h2>Not sure which service fits? We&apos;ll help you scope it.</h2>
+          <a className="button" href={contactHref} onClick={onNavigate}>
+            Discuss Your Project
+          </a>
+          <div className="mobile-navigation__contact-links">
+            <a href="tel:+18556003777" onClick={onNavigate}>+1 855-600-3777</a>
+            <a href="mailto:info@maxsourceworld.com" onClick={onNavigate}>
+              info@maxsourceworld.com
+            </a>
+          </div>
+        </aside>
+      ) : (
+        <a
+          className="button mobile-navigation__schedule"
+          href={contactHref}
+          onClick={onNavigate}
+        >
+          Schedule A Free Call
+        </a>
+      )}
+    </div>
+  );
+}
+
 export default function Header({ initialData }: { initialData: HeaderData | null }) {
   const [headerData, setHeaderData] = useState<HeaderData | null>(initialData);
   const [menuError, setMenuError] = useState("");
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     if (initialData) {
@@ -120,6 +312,7 @@ export default function Header({ initialData }: { initialData: HeaderData | null
   const closeMegaMenu = () => {
     setOpenMenuId(null);
     setActiveCategoryId(null);
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -143,7 +336,7 @@ export default function Header({ initialData }: { initialData: HeaderData | null
         </Link>
 
         <button
-          className="site-header__mobile-toggle"
+          className={`site-header__mobile-toggle${mobileMenuOpen ? " is-open" : ""}`}
           type="button"
           aria-expanded={mobileMenuOpen}
           aria-controls="primary-navigation"
@@ -165,7 +358,7 @@ export default function Header({ initialData }: { initialData: HeaderData | null
           {menuError ? (
             <p className="site-header__error" role="status">{menuError}</p>
           ) : (
-            <ul className="site-header__menu">
+            <ul className="site-header__menu site-header__menu--desktop">
               {menuItems.map((item) => {
                 const hasChildren = item.children.length > 0;
                 const isOpen = openMenuId === item.id;
@@ -196,9 +389,7 @@ export default function Header({ initialData }: { initialData: HeaderData | null
                           }}
                         >
                           <span aria-hidden="true">
-                            <svg fill="#fff" width="15px" height="15px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
-                            </svg>
+                            <MainMenuDropdownArrow />
                           </span>
                         </button>
                       )}
@@ -307,6 +498,13 @@ export default function Header({ initialData }: { initialData: HeaderData | null
                 );
               })}
             </ul>
+          )}
+          {mobileMenuOpen && !menuError && (
+            <MobileNavigation
+              items={menuItems}
+              contactItem={contactItem}
+              onNavigate={closeMegaMenu}
+            />
           )}
         </nav>
 

@@ -1,5 +1,6 @@
 import type { WordPressPage } from "../../lib/wordpress-pages";
 import SectionIntro from "../common/SectionIntro";
+import SwipeCarousel from "../common/SwipeCarousel";
 import WordPressText, {
   normalizeWordPressHtml,
   wrapBareTextInParagraphs,
@@ -91,7 +92,7 @@ export default function HomeWhatWeDoSection({ page }: { page: WordPressPage }) {
       />
 
       {cards.length > 0 && (
-        <div className="what-we-do__grid">
+        <SwipeCarousel className="what-we-do__grid" label="Services">
           {cards.map((card) => {
             const normalizedContent = normalizeWordPressHtml(card.content);
             const content = wrapBareTextInParagraphs(
@@ -113,7 +114,7 @@ export default function HomeWhatWeDoSection({ page }: { page: WordPressPage }) {
               />
             );
           })}
-        </div>
+        </SwipeCarousel>
       )}
     </section>
   );
