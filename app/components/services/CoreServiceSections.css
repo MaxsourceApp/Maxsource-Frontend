@@ -224,6 +224,22 @@
     line-height: 18.4px;
 }
 
+.core-our-services__card {
+    transition: border-color 0.3s ease-in-out;
+}
+
+.core-our-services__card span.core-our-services__number {
+    transition: color 0.3s ease-in-out;
+}
+
+.core-our-services__card:hover span.core-our-services__number {
+    color: #FE000050;
+}
+
+.core-our-services__card:hover {
+    border: 1px solid #FE000050;
+}
+
 .engagement-models__input:checked + .engagement-models__option > span:first-child,
 .engagement-models__input:checked + .engagement-models__option > .engagement-models__arrow {
   color: var(--highlighted-red);
@@ -234,10 +250,23 @@
     font-family: var(--body-font), Arial, Helvetica, sans-serif;
     font-size: 22px;
     font-weight: 700;
-    color: #232323;
+    color: #5F5B59;
     line-height: 31.2px;
 }
-
+.engagement-models__input:checked + .engagement-models__option strong {
+  color: #171615;
+}
+.engagement-models__option:hover strong {
+  color: #171615;
+}
+.engagement-models__option:hover{
+  color: rgb(23, 22, 21);
+    box-shadow: rgba(254, 0, 0, 0.12) 0px 8px 18px;
+    border-color: var(--highlighted-red);
+}
+label.engagement-models__option:hover span {
+    color: var(--highlighted-red);
+}
 .engagement-models__arrow {
   width: 15px;
   height: 15px;
