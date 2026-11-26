@@ -4,7 +4,7 @@ import { getWordPressMediaBackground } from "../../lib/wordpress-media";
 import WordPressText, { normalizeWordPressHtml } from "./WordPressText";
 
 function BannerTitle({ title }: { title: string }) {
-  const emphasis = /(automate|laravel|clients|growing.|Remote Team|business forward.)/i.exec(title);
+  const emphasis = /(automate|laravel|clients|growing.|Remote Team|business forward.|globally)/i.exec(title);
   if (!emphasis || emphasis.index === undefined) {
     return <WordPressText value={title} />;
   }

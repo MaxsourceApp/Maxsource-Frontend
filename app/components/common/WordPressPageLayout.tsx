@@ -6,6 +6,10 @@ import WhyMaxsourceSection from "../services/WhyMaxsourceSection";
 import WhatWeBuildSection from "../services/WhatWeBuildSection";
 import OurStrengthsSection from "../services/OurStrengthsSection";
 import BenefitsSection from "../services/BenefitsSection";
+import {
+  CoreOurServicesSection,
+  CoreServiceWhySection,
+} from "../services/CoreServiceSections";
 import FaqSection from "../services/FaqSection";
 import IndustriesWeServeSection from "../home/IndustriesWeServeSection";
 import ProjectsSection from "./ProjectsSection";
@@ -47,6 +51,16 @@ const innerServicePageSlugs = new Set([
   "healthcare-outsourcing",
 ]);
 
+const coreServicePageSlugs = new Set([
+  "web-cms-development",
+  "mobile-app-development",
+  "digital-marketing",
+  "ecommerce-development",
+  "virtual-assistance-services",
+  "ai-solutions",
+  "healthcare-outsourcing",
+]);
+
 export default async function WordPressPageLayout({
   slug,
   children,
@@ -60,15 +74,54 @@ export default async function WordPressPageLayout({
     notFound();
   }
 
+  const isCoreServicePage = coreServicePageSlugs.has(slug);
+  const hasCoreServicesContent = Boolean(
+    page.acf?.core_our_services_title?.trim() ||
+      page.acf?.our_core_services?.trim(),
+  );
+  const hasCoreWhyContent = Boolean(
+    page.acf?.core_service_why_maxsource_title?.trim() ||
+      page.acf?.core_service_why_maxsource?.trim(),
+  );
+
   return (
     <main className="content-page">
       {slug !== "contact" && <PageBanner page={page} />}
-      {innerServicePageSlugs.has(slug) && <WhyMaxsourceSection page={page} />}
-      {innerServicePageSlugs.has(slug) && <WhatWeBuildSection page={page} />}
+      {innerServicePageSlugs.has(slug) && !isCoreServicePage && (
+        <WhyMaxsourceSection page={page} />
+      )}
+      {innerServicePageSlugs.has(slug) && !isCoreServicePage && (
+        <WhatWeBuildSection page={page} />
+      )}
+      {isCoreServicePage &&
+        (hasCoreServicesContent || hasCoreWhyContent) && (
+          <>
+            {hasCoreServicesContent ? (
+              <CoreOurServicesSection page={page} />
+            ) : (
+              <WhatWeBuildSection page={page} />
+            )}
+            {hasCoreWhyContent ? (
+              <CoreServiceWhySection page={page} />
+            ) : (
+              <WhyMaxsourceSection page={page} />
+            )}
+          </>
+        )}
+      {isCoreServicePage &&
+        !hasCoreServicesContent &&
+        !hasCoreWhyContent && (
+          <>
+            <WhyMaxsourceSection page={page} />
+            <WhatWeBuildSection page={page} />
+          </>
+        )}
       {innerServicePageSlugs.has(slug) && <OurStrengthsSection page={page} />}
       {innerServicePageSlugs.has(slug) && <BenefitsSection page={page} />}
-      {/* Projects after Benefits on service pages */}
-      {innerServicePageSlugs.has(slug) && <ProjectsSection />}
+      {/* Selected Work is reserved for inner service pages. */}
+      {innerServicePageSlugs.has(slug) &&
+        !coreServicePageSlugs.has(slug) &&
+        <ProjectsSection />}
       {innerServicePageSlugs.has(slug) && <FaqSection page={page} />}
       {slug === "home" && <HomeWhatWeDoSection page={page} />}
       {slug === "home" && <IndustriesWeServeSection page={page} />}

@@ -1,5 +1,8 @@
 import WordPressPageLayout from "../components/common/WordPressPageLayout";
-import { getWordPressPageRoutes } from "../lib/wordpress-pages";
+import {
+  getWordPressPagePathSegments,
+  getWordPressPageRoutes,
+} from "../lib/wordpress-pages";
 
 const dedicatedPageSlugs = new Set([
   "about-us",
@@ -9,6 +12,7 @@ const dedicatedPageSlugs = new Set([
   "contact",
   "digital-marketing",
   "ecommerce-development",
+  "global",
   "healthcare-outsourcing",
   "laravel-development",
   "mobile-app-development",
@@ -18,6 +22,8 @@ const dedicatedPageSlugs = new Set([
   "remote-teams",
   "ruby-on-rails-development",
   "services",
+  "privacy-policy",
+  "sitemap",
   "virtual-assistance-services",
   "web-cms-development",
   "wordpress-development",
@@ -31,15 +37,7 @@ export async function generateStaticParams() {
   const pagesById = new Map(pages.map((page) => [page.id, page]));
 
   return pages.flatMap((page) => {
-    const segments: string[] = [];
-    const visited = new Set<number>();
-    let current: typeof page | undefined = page;
-
-    while (current && !visited.has(current.id)) {
-      visited.add(current.id);
-      segments.unshift(current.slug);
-      current = current.parent ? pagesById.get(current.parent) : undefined;
-    }
+    const segments = getWordPressPagePathSegments(page, pagesById);
 
     if (
       segments.length === 0 ||

@@ -11,6 +11,19 @@ export interface WordPressPage {
     banner_description?: string;
     banner_button_text?: string;
     call_to_action?: string;
+    core_our_services_title?: string;
+    our_core_services?: string;
+    core_service_why_maxsource_title?: string;
+    core_service_why_maxsource?: string;
+    how_we_deliver_title?: string;
+    how_we_deliver_column_1?: string;
+    how_we_deliver_column_2?: string;
+    how_we_deliver_column_3?: string;
+    our_presence_title?: string;
+    our_presence_tab_1?: string;
+    our_presence_tab_2?: string;
+    our_presence_tab_3?: string;
+    global_description?: string;
     our_expertise_title?: string;
     core_expertise?: string;
     under_one_roof?: string;
@@ -117,6 +130,7 @@ export interface WordPressPageRoute {
   id: number;
   slug: string;
   parent: number;
+  title: { rendered: string };
 }
 
 function getPagesApiUrl() {
@@ -150,17 +164,39 @@ function isWordPressPageRoute(value: unknown): value is WordPressPageRoute {
   }
 
   const page = value as Record<string, unknown>;
+  const title = page.title;
   return (
     typeof page.id === "number" &&
     typeof page.slug === "string" &&
-    typeof page.parent === "number"
+    typeof page.parent === "number" &&
+    typeof title === "object" &&
+    title !== null &&
+    "rendered" in title &&
+    typeof title.rendered === "string"
   );
+}
+
+export function getWordPressPagePathSegments(
+  page: WordPressPageRoute,
+  pagesById: ReadonlyMap<number, WordPressPageRoute>,
+) {
+  const segments: string[] = [];
+  const visited = new Set<number>();
+  let current: WordPressPageRoute | undefined = page;
+
+  while (current && !visited.has(current.id)) {
+    visited.add(current.id);
+    segments.unshift(current.slug);
+    current = current.parent ? pagesById.get(current.parent) : undefined;
+  }
+
+  return segments;
 }
 
 export async function getWordPressPageRoutes(): Promise<WordPressPageRoute[]> {
   const url = getPagesApiUrl();
   url.searchParams.set("per_page", "100");
-  url.searchParams.set("_fields", "id,slug,parent");
+  url.searchParams.set("_fields", "id,slug,parent,title");
 
   const pages: WordPressPageRoute[] = [];
   let totalPages = 1;
